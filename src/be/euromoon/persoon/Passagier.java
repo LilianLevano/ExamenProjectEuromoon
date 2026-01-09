@@ -4,8 +4,10 @@ import java.time.LocalDate;
 
 public class Passagier extends Persoon{
 
+    private static int passagierTeller = 0;
     public Passagier(String voornaam, String achternaam, String rijksregisternummer, LocalDate geboortedatum) {
         super(voornaam, achternaam, rijksregisternummer, geboortedatum);
+        passagierTeller++;
     }
 
     @Override

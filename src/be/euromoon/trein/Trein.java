@@ -4,6 +4,7 @@ public class Trein {
 
     private TypeLocomotief typeLocomotief;
     private int aantalZitplaatsen;
+    private static int treinTeller = 0;
 
     public Trein(TypeLocomotief typeLocomotief) {
         this.typeLocomotief = typeLocomotief;
@@ -13,6 +14,7 @@ public class Trein {
         }else if(typeLocomotief == TypeLocomotief.CLASS_374){
             aantalZitplaatsen = 80*typeLocomotief.getMaxAantalWagon();
         }
+        treinTeller++;
 
     }
 

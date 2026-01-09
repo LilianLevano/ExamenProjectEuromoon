@@ -7,6 +7,8 @@ public class Personeelsleed extends Persoon{
 
   private ArrayList<String> lijstCertificaties = new ArrayList<>();
   private ArrayList<String> lijstVasteRol =  new ArrayList<>();
+  private static int personeelsleedTeller = 0;
+
 
   private String rol;
 
@@ -17,6 +19,7 @@ public class Personeelsleed extends Persoon{
         lijstVasteRol.add("Conducteur");
         lijstVasteRol.add("Steward");
         lijstVasteRol.add("Bagage Personeel");
+        personeelsleedTeller++;
 
     }
 

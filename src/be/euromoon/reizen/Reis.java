@@ -5,7 +5,7 @@ import be.euromoon.trein.Trein;
 
 import java.util.ArrayList;
 
-public class Reizen {
+public class Reis {
 
     private Traject traject;
     private Tijdstip tijdstip;
@@ -13,12 +13,14 @@ public class Reizen {
     private ArrayList<Personeelsleed> lijstPersoneelsleden = new ArrayList<>();
     private ArrayList<Personeelsleed> lijstBestuurder = new ArrayList<>();
     private ArrayList<Personeelsleed> lijstSteward = new ArrayList<>();
+    private static int reisTeller = 0;
 
 
-    public Reizen(Traject traject, Tijdstip tijdstip, Trein trein) {
+    public Reis(Traject traject, Tijdstip tijdstip, Trein trein) {
         this.traject = traject;
         this.tijdstip = tijdstip;
         this.trein = trein;
+        reisTeller++;
     }
 
     public void voegPersoneelToe(Personeelsleed personeelsleden) {
@@ -35,10 +37,10 @@ public class Reizen {
 
     @Override
     public String toString() {
-        return "Reizen{" +
-                "traject = " + traject +
-                ", tijdstip = " + tijdstip +
-                ", trein = " + trein +
+        return "Reis{" +
+                  traject +
+                ", " + tijdstip +
+                ", " + trein +
                 ", lijstPersoneelsleden = " + lijstPersoneelsleden +
                 ", lijstBestuurder = " + lijstBestuurder +
                 ", lijstSteward = " + lijstSteward +
