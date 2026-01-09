@@ -38,4 +38,15 @@ public class Persoon {
     public void setGeboortedatum(LocalDate geboortedatum) {
         this.geboortedatum = geboortedatum;
     }
+
+
+    @Override
+    public String toString() {
+        return
+                "voornaam = " + voornaam +
+                ", achternaam = " + achternaam +
+                ", rijksregisternummer = " + rijksregisternummer +
+                ", geboortedatum = " + geboortedatum +
+                '}';
+    }
 }
