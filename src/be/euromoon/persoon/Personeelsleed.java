@@ -5,12 +5,12 @@ import java.util.ArrayList;
 
 public class Personeelsleed extends Persoon{
 
-  private ArrayList<String> lijstCertificaties = new ArrayList<>();
-  private ArrayList<String> lijstVasteRol =  new ArrayList<>();
+  private final ArrayList<String> lijstCertificaties = new ArrayList<>();
+  private final ArrayList<String> lijstVasteRol =  new ArrayList<>();
   private static int personeelsleedTeller = 0;
 
 
-  private String rol;
+  private final String rol;
 
 
     public Personeelsleed(String voornaam, String achternaam, String rijksregisternummer, LocalDate geboortedatum, String rol) {
@@ -24,7 +24,9 @@ public class Personeelsleed extends Persoon{
 
     }
 
-
+    public static int getPersoneelsleedTeller() {
+        return personeelsleedTeller;
+    }
 
     public void voegCertificatie(String certificatie){
         lijstCertificaties.add(certificatie);

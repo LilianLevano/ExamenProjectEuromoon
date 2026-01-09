@@ -4,7 +4,7 @@ public enum TypeLocomotief {
 
     CLASS_373(12), CLASS_374(14);
 
-    private int maxAantalWagon;
+    private final int maxAantalWagon;
 
     TypeLocomotief(int maxAantalWagon) {
         this.maxAantalWagon = maxAantalWagon;

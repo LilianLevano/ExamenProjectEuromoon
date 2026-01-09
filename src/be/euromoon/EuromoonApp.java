@@ -5,6 +5,8 @@ import be.euromoon.persoon.Personeelsleed;
 import be.euromoon.reizen.Reis;
 import be.euromoon.reizen.Tijdstip;
 import be.euromoon.reizen.Traject;
+import be.euromoon.tickets.Klasse;
+import be.euromoon.tickets.Ticket;
 import be.euromoon.trein.Trein;
 import be.euromoon.trein.TypeLocomotief;
 
@@ -21,11 +23,12 @@ public class EuromoonApp {
     public static final String GEEL = "\u001B[33m";
     public static final String RESET = "\u001B[0m";
     Scanner sc = new Scanner(System.in);
-    private ArrayList<Passagier> lijstPassagier = new ArrayList<>();
-    private ArrayList<Trein> lijstTrein = new ArrayList<>();
-    private ArrayList<Reis> lijstReis = new ArrayList<>();
+    private final ArrayList<Passagier> lijstPassagier = new ArrayList<>();
 
-    public void start(){
+    private final ArrayList<Reis> lijstReis = new ArrayList<>();
+    private final ArrayList<Ticket> lijstTicket = new ArrayList<>();
+
+    public void start() {
         System.out.println(GEEL + "Welkom op de Euromoon Manager App." + RESET);
 
         int keuzeMenu;
@@ -65,15 +68,9 @@ public class EuromoonApp {
                     treinAanReisKoppelen();
                     break;
                 case 4:
-
+                    verkoopTicketAanPassagier();
                     break;
                 case 5:
-
-                    break;
-                case 6:
-
-                    break;
-                case 7:
 
                     break;
                 case 8:
@@ -84,9 +81,9 @@ public class EuromoonApp {
 
     }
 
-    private void passagierRegistreren(){
+    private void passagierRegistreren() {
 
-        try{
+        try {
 
             System.out.print("Voornaam: ");
             String voornaam = sc.nextLine();
@@ -98,12 +95,12 @@ public class EuromoonApp {
             LocalDate geboortedatum = LocalDate.parse(sc.nextLine());
 
             int grootteLijstVoorAanpassing = lijstPassagier.size();
-            Passagier p = new Passagier(voornaam, achternaam, rijksregisternummer, geboortedatum );
+            Passagier p = new Passagier(voornaam, achternaam, rijksregisternummer, geboortedatum);
             lijstPassagier.add(p);
 
-            if (grootteLijstVoorAanpassing != lijstPassagier.size()){
+            if (grootteLijstVoorAanpassing != lijstPassagier.size()) {
                 System.out.println(GROEN + "Passagier werd succesvol aangemaakt" + RESET);
-            }else{
+            } else {
                 System.err.println("Passagier werd niet aangemaakt.");
             }
 
@@ -113,35 +110,34 @@ public class EuromoonApp {
         }
     }
 
-    private Personeelsleed maakBestuurder(){
-    System.out.println(GEEL + "Een reis heeft minstens 1 bestuurder nodig." + RESET);
-    System.out.print("Voornaam van de bestuurder: " );
-    String voornaam = sc.nextLine();
-    System.out.print("Achternaam van de bestuurder: " );
-    String achternaam = sc.nextLine();
-    System.out.print("Rijksregisternummer van de bestuurder: " );
-    String rijksregisternummer = sc.nextLine();
-    System.out.print("Geboortedatum (Formaat: yyyy-MM-dd): ");
-    LocalDate geboortedatum = LocalDate.parse(sc.nextLine());
+    private Personeelsleed maakBestuurder() {
+        System.out.println(GEEL + "Een reis heeft minstens 1 bestuurder nodig." + RESET);
+        System.out.print("Voornaam van de bestuurder: ");
+        String voornaam = sc.nextLine();
+        System.out.print("Achternaam van de bestuurder: ");
+        String achternaam = sc.nextLine();
+        System.out.print("Rijksregisternummer van de bestuurder: ");
+        String rijksregisternummer = sc.nextLine();
+        System.out.print("Geboortedatum (Formaat: yyyy-MM-dd): ");
+        LocalDate geboortedatum = LocalDate.parse(sc.nextLine());
 
-    Personeelsleed bestuurder = new Personeelsleed(voornaam, achternaam, rijksregisternummer, geboortedatum, "Bestuurder");
+        Personeelsleed bestuurder = new Personeelsleed(voornaam, achternaam, rijksregisternummer, geboortedatum, "Bestuurder");
 
-    String certificatieBestuurder = "";
-    System.out.println("Wat zijn de certificaties van de bestuurder ? Typ 'STOP' om te stoppen.");
-    do{
-        System.out.print("Certificatie van de bestuurder: ");
-        certificatieBestuurder = sc.nextLine();
+        String certificatieBestuurder;
+        System.out.println("Wat zijn de certificaties van de bestuurder ? Typ 'STOP' om te stoppen.");
+        do {
+            System.out.print("Certificatie van de bestuurder: ");
+            certificatieBestuurder = sc.nextLine();
 
-        if(!Objects.equals(certificatieBestuurder, "STOP")){
-            bestuurder.voegCertificatie(certificatieBestuurder);
-        }
-    }while(!Objects.equals(certificatieBestuurder, "STOP"));
+            if (!Objects.equals(certificatieBestuurder, "STOP")) {
+                bestuurder.voegCertificatie(certificatieBestuurder);
+            }
+        } while (!Objects.equals(certificatieBestuurder, "STOP"));
 
-    return bestuurder;
-}
+        return bestuurder;
+    }
 
     private Personeelsleed maakSteward() {
-
 
 
         System.out.print("Voornaam van de steward: ");
@@ -155,7 +151,7 @@ public class EuromoonApp {
 
         Personeelsleed steward = new Personeelsleed(voornaamSteward, achternaamSteward, rijksregisternummerSteward, geboortedatumSteward, "Steward");
 
-        String certificatieSteward = "";
+        String certificatieSteward;
 
         System.out.println("Wat zijn de certificaties van de steward ? Typ 'STOP' om te stoppen.");
         do {
@@ -169,23 +165,21 @@ public class EuromoonApp {
         } while (!Objects.equals(certificatieSteward, "STOP"));
 
 
-
         return steward;
     }
 
 
-    private void maakReis(){
+    private void maakReis() {
+        try {
 
-
-
-        try{
-
+            /*Maak een traject, onderdeel om een object Reis te bouwen  */
             System.out.print("Start punt van het traject: ");
             String startpunt = sc.nextLine();
             System.out.print("Eind punt van het traject: ");
             String eindpunt = sc.nextLine();
             Traject t = new Traject(startpunt, eindpunt);
 
+            /*Maak een Tijdstip, onderdeel om een object Reis te bouwen  */
             System.out.print("Startuur van het traject (Formaat: yyyy-MM-ddThh:mm:ss): ");
             LocalDateTime start = LocalDateTime.parse(sc.nextLine());
             System.out.print("Einduur van het traject (Formaat: yyyy-MM-ddThh:mm:ss): ");
@@ -193,27 +187,30 @@ public class EuromoonApp {
             Tijdstip ti = new Tijdstip(start, eind);
 
             Reis r = new Reis(t, ti);
+
+            /*Maak een Bestuurder, er moet er minstens 1 zijn per reis  */
             Personeelsleed bestuurder = maakBestuurder();
             r.voegBestuurderToe(bestuurder);
 
 
+            // Maak drie stewards aan, vereiste voor een reis
+
             System.out.println(GEEL + "Een reis heeft ook een minimum van drie stewards nodig." + RESET);
             int i = 3;
-            do{
-
+            do {
                 System.out.println(GEEL + "Maak een steward aan, nog " + i + " te maken." + RESET);
                 Personeelsleed steward = maakSteward();
                 r.voegStewardToe(steward);
                 i--;
-            }while(r.sizeLijstSteward() != 3);
+            } while (r.sizeLijstSteward() != 3);
 
 
             int grootteLijstVoorAanpassing = lijstReis.size();
             lijstReis.add(r);
 
-            if (grootteLijstVoorAanpassing != lijstReis.size()){
+            if (grootteLijstVoorAanpassing != lijstReis.size()) {
                 System.out.println(GROEN + "Reis werd succesvol aangemaakt" + RESET);
-            }else{
+            } else {
                 System.err.println("Reis werd niet aangemaakt.");
             }
 
@@ -224,23 +221,24 @@ public class EuromoonApp {
 
     }
 
-    private void toonLijsten(){
-        System.out.println(lijstPassagier.toString());
-        System.out.println(lijstTrein.toString());
-        System.out.println(lijstReis.toString());
+    private void toonLijsten() {
+        System.out.println(lijstPassagier);
+
+        System.out.println(lijstReis);
+        System.out.println(lijstTicket);
     }
 
-    private void treinAanReisKoppelen(){
+    private void treinAanReisKoppelen() {
 
-        try{
+        try {
             System.out.print("Welke type trein wil je aan deze reis koppelen? Je hebt de keuze tussen: 1. CLASS_373 2. CLASS_374. (Gebruik de nummer van de keuze): ");
             int keuzeTypeTrein = Integer.parseInt(sc.nextLine());
             TypeLocomotief typeLocomotief =
                     switch (keuzeTypeTrein) {
                         case 1 -> TypeLocomotief.CLASS_373;
                         case 2 -> TypeLocomotief.CLASS_374;
-                            default -> null;
-            };
+                        default -> null;
+                    };
 
             Trein trein = new Trein(typeLocomotief);
 
@@ -254,10 +252,41 @@ public class EuromoonApp {
 
             System.out.println(GROEN + "Trein werd succesvol gekoppeld aan deze reis." + RESET);
 
-        }catch (Exception e){
+        } catch (Exception e) {
             System.err.println("Fout");
         }
-
     }
 
+    private void verkoopTicketAanPassagier() {
+
+
+        System.out.println("Aan een ticket moet je een reis koppelen, hier zijn de mogelijke reizen: " + lijstReis);
+        System.out.print("Kies een reis. Gebruik de nummers om een reis te kiezen: ");
+        int keuzeReis = Integer.parseInt(sc.nextLine());
+        Reis reisKoppelenAanReis = lijstReis.get(keuzeReis);
+
+        if ((reisKoppelenAanReis.getTicketTeller() + 1) > (reisKoppelenAanReis.getTrein().getAantalZitplaatsen())) {
+            System.err.println("Deze reis zit al vol, sorry.");
+        } else {
+            System.out.println("Mogelijke passagiers aan wie je een ticket kan verkopen: " + lijstPassagier);
+            System.out.print("Kies een passagier. Gebruik de nummers om een passagier te kiezen: ");
+            int keuzePassagier = Integer.parseInt(sc.nextLine());
+            Passagier ticketAanPassagierVerkopen = lijstPassagier.get(keuzePassagier);
+
+            System.out.println("In welke klasse wil je zitten ? Je hebt keuze tussen: 1. Eerste Klasse 2. Tweede Klasse (Gebruik de nummers om een klasse te selecteren)");
+            System.out.print("-->");
+            int keuzeKlasse = Integer.parseInt(sc.nextLine());
+
+            Klasse klasse = switch (keuzeKlasse) {
+                case 1 -> Klasse.EERSTEKLASSE;
+                case 2 -> Klasse.TWEEDEKLASSE;
+                default -> null;
+            };
+
+            Ticket ticket = new Ticket(ticketAanPassagierVerkopen, reisKoppelenAanReis, klasse);
+            lijstTicket.add(ticket);
+
+        }
+    }
 }
+

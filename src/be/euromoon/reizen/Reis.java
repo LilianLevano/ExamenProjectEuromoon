@@ -10,16 +10,21 @@ public class Reis {
     private Traject traject;
     private Tijdstip tijdstip;
     private Trein trein;
-    private ArrayList<Personeelsleed> lijstPersoneelsleden = new ArrayList<>();
-    private ArrayList<Personeelsleed> lijstBestuurder = new ArrayList<>();
-    private ArrayList<Personeelsleed> lijstSteward = new ArrayList<>();
+    private final ArrayList<Personeelsleed> lijstPersoneelsleden = new ArrayList<>();
+    private final ArrayList<Personeelsleed> lijstBestuurder = new ArrayList<>();
+    private final ArrayList<Personeelsleed> lijstSteward = new ArrayList<>();
     private static int reisTeller = 0;
+    private int ticketTeller = 0;
 
 
     public Reis(Traject traject, Tijdstip tijdstip) {
         this.traject = traject;
         this.tijdstip = tijdstip;
         reisTeller++;
+    }
+
+    public static int getReisTeller() {
+        return reisTeller;
     }
 
     public void koppelTreinAanReis(Trein trein) {
@@ -40,6 +45,18 @@ public class Reis {
 
     public void voegStewardToe(Personeelsleed steward) {
         lijstSteward.add(steward);
+    }
+
+    public void ticketGemaakt(){
+        this.ticketTeller++;
+    }
+
+    public int getTicketTeller() {
+        return ticketTeller;
+    }
+
+    public Trein getTrein() {
+        return trein;
     }
 
     @Override
