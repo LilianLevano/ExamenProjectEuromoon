@@ -41,7 +41,7 @@ public class Ticket {
         return "Tickets{" +
                 passagier +
                 ", "+ reis +
-                ", klasse = " + klasse +
+                ", " + klasse +
                 '}';
     }
 }

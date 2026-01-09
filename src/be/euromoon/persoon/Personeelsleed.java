@@ -12,13 +12,14 @@ public class Personeelsleed extends Persoon{
 
   private String rol;
 
+
     public Personeelsleed(String voornaam, String achternaam, String rijksregisternummer, LocalDate geboortedatum, String rol) {
         super(voornaam, achternaam, rijksregisternummer, geboortedatum);
         this.rol = rol;
-
         lijstVasteRol.add("Conducteur");
         lijstVasteRol.add("Steward");
         lijstVasteRol.add("Bagage Personeel");
+
         personeelsleedTeller++;
 
     }

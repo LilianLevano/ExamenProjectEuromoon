@@ -16,11 +16,14 @@ public class Reis {
     private static int reisTeller = 0;
 
 
-    public Reis(Traject traject, Tijdstip tijdstip, Trein trein) {
+    public Reis(Traject traject, Tijdstip tijdstip) {
         this.traject = traject;
         this.tijdstip = tijdstip;
-        this.trein = trein;
         reisTeller++;
+    }
+
+    public void koppelTreinAanReis(Trein trein) {
+        this.trein = trein;
     }
 
     public void voegPersoneelToe(Personeelsleed personeelsleden) {
