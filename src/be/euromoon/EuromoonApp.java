@@ -27,6 +27,7 @@ public class EuromoonApp {
 
     private final ArrayList<Reis> lijstReis = new ArrayList<>();
     private final ArrayList<Ticket> lijstTicket = new ArrayList<>();
+    private final ArrayList<Reis> lijstReisMetTrein = new ArrayList<>();
 
     public void start() {
         System.out.println(GEEL + "Welkom op de Euromoon Manager App." + RESET);
@@ -231,7 +232,7 @@ public class EuromoonApp {
     private void treinAanReisKoppelen() {
 
         try {
-            System.out.print("Welke type trein wil je aan deze reis koppelen? Je hebt de keuze tussen: 1. CLASS_373 2. CLASS_374. (Gebruik de nummer van de keuze): ");
+            System.out.print("Welke type trein wil je aan deze reis koppelen? Je hebt de keuze tussen: 1. CLASS_373 2. CLASS_374. (Gebruik de index van de keuze om deze te selecteren): ");
             int keuzeTypeTrein = Integer.parseInt(sc.nextLine());
             TypeLocomotief typeLocomotief =
                     switch (keuzeTypeTrein) {
@@ -242,13 +243,65 @@ public class EuromoonApp {
 
             Trein trein = new Trein(typeLocomotief);
 
-            System.out.println("Hier zijn alle mogelijke reizen: " + lijstReis);
-            System.out.print("Aan welke reis wil je deze trein koppelen? Gebruik de index van de reis.)");
+            System.out.println("Hier zijn alle mogelijke reizen: ");
+
+
+            for (Reis r : lijstReis) {
+                ArrayList<Personeelsleed> lijstBestuurder = r.getLijstBestuurder();
+
+                System.out.println("[" + GROEN + "Reis"+lijstReis.indexOf(r) + ":" +  RESET +
+                        "\n\tTraject: " + r.getTraject() +
+                        "\n\tTijdstip:" + r.getTijdstip() +
+                        "\n\tLijst bestuurders: ");
+
+                for (Personeelsleed b : lijstBestuurder) {
+                    System.out.println(
+                            GEEL + "\t\tBestuurder" + lijstBestuurder.indexOf(b) + ":" + RESET +
+                                    "\n\t\t\tVoornaam bestuurder: " + b.getVoornaam() +
+                                    "\n\t\t\tAchternaam bestuurder: " + b.getAchternaam() +
+                                    "\n\t\t\tRijksregisternummer van de bestuurder: " + b.getRijksregisternummer() +
+                                    "\n\t\t\tGeboortedatum van de bestuurder: " + b.getGeboortedatum() +
+                                    "\n\t\t\tCertificaties: " + b.getLijstCertificaties());
+
+                }
+                System.out.println("\n\tLijst stewards: ");
+                ArrayList<Personeelsleed> lijstSteward = r.getLijstSteward();
+                for (Personeelsleed s : lijstSteward) {
+                    System.out.println(
+                            GEEL + "\t\tSteward" + lijstSteward.indexOf(s) + ":" + RESET +
+                                    "\n\t\t\tVoornaam steward: " + s.getVoornaam() +
+                                    "\n\t\t\tAchternaam steward: " + s.getAchternaam() +
+                                    "\n\t\t\tRijksregisternummer van de steward: " + s.getRijksregisternummer() +
+                                    "\n\t\t\tGeboortedatum van de steward: " + s.getGeboortedatum() +
+                                    "\n\t\t\tCertificaties: " + s.getLijstCertificaties())
+                                    ;
+                }
+
+                System.out.println("\n\tLijst algemene personeelsleden: ");
+                ArrayList<Personeelsleed> lijstPersoneel = r.getLijstPersoneelsleden();
+                for (Personeelsleed pl : lijstPersoneel) {
+                    System.out.println(
+                            GEEL + "\t\tPersoneelsleed" + lijstSteward.indexOf(pl) + ":" + RESET +
+                                    "\n\t\t\tVoornaam personeelsleed: " + pl.getVoornaam() +
+                                    "\n\t\t\tAchternaam personeelsleed: " + pl.getAchternaam() +
+                                    "\n\t\t\tRijksregisternummer van de personeelsleed: " + pl.getRijksregisternummer() +
+                                    "\n\t\t\tGeboortedatum van de personeelsleed: " + pl.getGeboortedatum() +
+                                    "\n\t\t\tCertificaties: " + pl.getLijstCertificaties()
+                                    );
+                }
+
+                System.out.println("]\n");
+
+            }
+
+
+            System.out.print("Aan welke reis wil je deze trein koppelen? (Gebruik de index van de reis.): ");
             int keuzeReis = Integer.parseInt(sc.nextLine());
 
             Reis reisKoppelenAanTrein = lijstReis.get(keuzeReis);
 
             reisKoppelenAanTrein.koppelTreinAanReis(trein);
+            lijstReisMetTrein.add(reisKoppelenAanTrein);
 
             System.out.println(GROEN + "Trein werd succesvol gekoppeld aan deze reis." + RESET);
 
@@ -260,33 +313,100 @@ public class EuromoonApp {
     private void verkoopTicketAanPassagier() {
 
 
-        System.out.println("Aan een ticket moet je een reis koppelen, hier zijn de mogelijke reizen: " + lijstReis);
-        System.out.print("Kies een reis. Gebruik de nummers om een reis te kiezen: ");
-        int keuzeReis = Integer.parseInt(sc.nextLine());
-        Reis reisKoppelenAanReis = lijstReis.get(keuzeReis);
+        System.out.println("Aan een ticket moet je een reis koppelen, hier zijn de mogelijke reizen: ");
 
-        if ((reisKoppelenAanReis.getTicketTeller() + 1) > (reisKoppelenAanReis.getTrein().getAantalZitplaatsen())) {
-            System.err.println("Deze reis zit al vol, sorry.");
-        } else {
-            System.out.println("Mogelijke passagiers aan wie je een ticket kan verkopen: " + lijstPassagier);
-            System.out.print("Kies een passagier. Gebruik de nummers om een passagier te kiezen: ");
-            int keuzePassagier = Integer.parseInt(sc.nextLine());
-            Passagier ticketAanPassagierVerkopen = lijstPassagier.get(keuzePassagier);
 
-            System.out.println("In welke klasse wil je zitten ? Je hebt keuze tussen: 1. Eerste Klasse 2. Tweede Klasse (Gebruik de nummers om een klasse te selecteren)");
-            System.out.print("-->");
-            int keuzeKlasse = Integer.parseInt(sc.nextLine());
+        for (Reis r : lijstReisMetTrein) {
+            ArrayList<Personeelsleed> lijstBestuurder = r.getLijstBestuurder();
 
-            Klasse klasse = switch (keuzeKlasse) {
-                case 1 -> Klasse.EERSTEKLASSE;
-                case 2 -> Klasse.TWEEDEKLASSE;
-                default -> null;
-            };
+            System.out.println("[" + GROEN + "Reis"+lijstReis.indexOf(r) + ":" +  RESET +
+                    "\n\tTraject: " + r.getTraject() +
+                    "\n\tTijdstip:" + r.getTijdstip() +
+                    "\n\tLijst bestuurders: ");
 
-            Ticket ticket = new Ticket(ticketAanPassagierVerkopen, reisKoppelenAanReis, klasse);
-            lijstTicket.add(ticket);
+            for (Personeelsleed b : lijstBestuurder) {
+                System.out.println(
+                        GEEL + "\t\tBestuurder" + lijstBestuurder.indexOf(b) + ":" + RESET +
+                                "\n\t\t\tVoornaam bestuurder: " + b.getVoornaam() +
+                                "\n\t\t\tAchternaam bestuurder: " + b.getAchternaam() +
+                                "\n\t\t\tRijksregisternummer van de bestuurder: " + b.getRijksregisternummer() +
+                                "\n\t\t\tGeboortedatum van de bestuurder: " + b.getGeboortedatum() +
+                                "\n\t\t\tCertificaties: " + b.getLijstCertificaties());
+
+            }
+            System.out.println("\n\tLijst stewards: ");
+            ArrayList<Personeelsleed> lijstSteward = r.getLijstSteward();
+            for (Personeelsleed s : lijstSteward) {
+                System.out.println(
+                        GEEL + "\t\tSteward" + lijstSteward.indexOf(s) + ":" + RESET +
+                                "\n\t\t\tVoornaam steward: " + s.getVoornaam() +
+                                "\n\t\t\tAchternaam steward: " + s.getAchternaam() +
+                                "\n\t\t\tRijksregisternummer van de steward: " + s.getRijksregisternummer() +
+                                "\n\t\t\tGeboortedatum van de steward: " + s.getGeboortedatum() +
+                                "\n\t\t\tCertificaties: " + s.getLijstCertificaties())
+                ;
+            }
+
+            System.out.println("\n\tLijst algemene personeelsleden: ");
+            ArrayList<Personeelsleed> lijstPersoneel = r.getLijstPersoneelsleden();
+            for (Personeelsleed pl : lijstPersoneel) {
+                System.out.println(
+                        GEEL + "\t\tPersoneelsleed" + lijstSteward.indexOf(pl) + ":" + RESET +
+                                "\n\t\t\tVoornaam personeelsleed: " + pl.getVoornaam() +
+                                "\n\t\t\tAchternaam personeelsleed: " + pl.getAchternaam() +
+                                "\n\t\t\tRijksregisternummer van de personeelsleed: " + pl.getRijksregisternummer() +
+                                "\n\t\t\tGeboortedatum van de personeelsleed: " + pl.getGeboortedatum() +
+                                "\n\t\t\tCertificaties: " + pl.getLijstCertificaties()
+                );
+            }
+
+            System.out.println("]\n");
+
+            System.out.println("Type trein dat deze reis zal gebruiken: " + r.getTrein() + "\n");
 
         }
+
+            System.out.print("Kies een reis. Gebruik de nummers om een reis te kiezen: ");
+            int keuzeReis = Integer.parseInt(sc.nextLine());
+            Reis reisKoppelenAanReis = lijstReis.get(keuzeReis);
+
+            if ((reisKoppelenAanReis.getTicketTeller() + 1) > (reisKoppelenAanReis.getTrein().getAantalZitplaatsen())) {
+                System.err.println("Deze reis zit al vol, sorry.");
+            } else {
+
+                System.out.println("Mogelijke passagiers aan wie je een ticket kan verkopen: ");
+
+
+                for (Passagier p : lijstPassagier) {
+                    System.out.println(
+                            GEEL + "Passagier" + lijstPassagier.indexOf(p) + ":" + RESET +
+                                    "\nVoornaam passagier: " + p.getVoornaam() +
+                                    "\nAchternaam passagier: " + p.getAchternaam() +
+                                    "\nRijksregisternummer van de passagier: " + p.getRijksregisternummer() +
+                                    "\nGeboortedatum van de passagier: " + p.getGeboortedatum() +
+                                    "]\n");
+                }
+
+
+                System.out.print("Kies een passagier. Gebruik de nummer van de gewenste passagier om deze te selecteren: ");
+                int keuzePassagier = Integer.parseInt(sc.nextLine());
+                Passagier ticketAanPassagierVerkopen = lijstPassagier.get(keuzePassagier);
+
+                System.out.println("In welke klasse wil je zitten ? Je hebt keuze tussen: 1. Eerste Klasse 2. Tweede Klasse (Gebruik de nummers om een klasse te selecteren)");
+                System.out.print("-->");
+                int keuzeKlasse = Integer.parseInt(sc.nextLine());
+
+                Klasse klasse = switch (keuzeKlasse) {
+                    case 1 -> Klasse.EERSTEKLASSE;
+                    case 2 -> Klasse.TWEEDEKLASSE;
+                    default -> null;
+                };
+
+                Ticket ticket = new Ticket(ticketAanPassagierVerkopen, reisKoppelenAanReis, klasse);
+                lijstTicket.add(ticket);
+
+            }
+
     }
 }
 

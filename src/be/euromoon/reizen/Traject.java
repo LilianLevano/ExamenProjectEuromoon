@@ -27,10 +27,9 @@ public class Traject {
 
     @Override
     public String toString() {
-        return "Traject{" +
-                "startPunt = " + startPunt +
-                ", eindPunt = " + eindPunt +
-                '}';
+        return
+                "startPunt: " + startPunt +
+                ", eindPunt: " + eindPunt;
     }
 }
 

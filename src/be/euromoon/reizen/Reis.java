@@ -7,6 +7,9 @@ import java.util.ArrayList;
 
 public class Reis {
 
+    public static final String GROEN = "\u001B[32m";
+    public static final String GEEL = "\u001B[33m";
+    public static final String RESET = "\u001B[0m";
     private Traject traject;
     private Tijdstip tijdstip;
     private Trein trein;
@@ -23,8 +26,29 @@ public class Reis {
         reisTeller++;
     }
 
-    public static int getReisTeller() {
-        return reisTeller;
+    public static String getReisTeller() {
+        return "Reis" + reisTeller;
+    }
+
+
+    public ArrayList<Personeelsleed> getLijstSteward() {
+        return lijstSteward;
+    }
+
+    public ArrayList<Personeelsleed> getLijstPersoneelsleden() {
+        return lijstPersoneelsleden;
+    }
+
+    public ArrayList<Personeelsleed> getLijstBestuurder() {
+        return lijstBestuurder;
+    }
+
+    public Traject getTraject() {
+        return traject;
+    }
+
+    public Tijdstip getTijdstip() {
+        return tijdstip;
     }
 
     public void koppelTreinAanReis(Trein trein) {

@@ -13,10 +13,10 @@ public class Tijdstip {
 
     @Override
     public String toString() {
-        return "Tijdstip{" +
-                "aankomstPuntA = " + aankomstPuntA +
-                ", aankomstPuntB = " + aankomstPuntB +
-                '}';
+        return
+                "vertrek uur: " + aankomstPuntA +
+                ", aankomstuur:  " + aankomstPuntB;
+
     }
 
     public LocalDateTime getAankomstPuntA() {

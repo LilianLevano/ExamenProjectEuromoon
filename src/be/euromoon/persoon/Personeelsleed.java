@@ -28,6 +28,10 @@ public class Personeelsleed extends Persoon{
         return personeelsleedTeller;
     }
 
+    public ArrayList<String> getLijstCertificaties() {
+        return lijstCertificaties;
+    }
+
     public void voegCertificatie(String certificatie){
         lijstCertificaties.add(certificatie);
     }
