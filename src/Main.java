@@ -1,11 +1,17 @@
+import be.euromoon.EuromoonApp;
+import be.euromoon.persoon.Passagier;
 import be.euromoon.persoon.Personeelsleed;
-import be.euromoon.persoon.Persoon;
-import be.euromoon.persoon.TypePersoneel;
+import be.euromoon.reizen.Reis;
+import be.euromoon.reizen.Tijdstip;
+import be.euromoon.reizen.Traject;
+import be.euromoon.tickets.Klasse;
+import be.euromoon.tickets.Ticket;
+import be.euromoon.trein.Trein;
+import be.euromoon.trein.TypeLocomotief;
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 void main() {
 
-    Personeelsleed p = new Personeelsleed("Lilian", "Levano", "123-123", LocalDate.now(), TypePersoneel.CONDUCTEURS);
-    System.out.println(p.getVasteRol());
+    EuromoonApp app = new EuromoonApp();
+    app.start();
+
 }

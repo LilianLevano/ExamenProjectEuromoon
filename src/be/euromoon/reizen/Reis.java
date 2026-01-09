@@ -26,6 +26,10 @@ public class Reis {
         this.trein = trein;
     }
 
+    public int sizeLijstSteward() {
+        return lijstSteward.size();
+    }
+
     public void voegPersoneelToe(Personeelsleed personeelsleden) {
         lijstPersoneelsleden.add(personeelsleden);
     }
