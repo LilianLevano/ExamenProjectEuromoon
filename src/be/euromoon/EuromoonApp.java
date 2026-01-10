@@ -35,7 +35,7 @@ public class EuromoonApp {
     private final ArrayList<Reis> lijstReisMetTrein = new ArrayList<>();
 
     public void start() {
-        System.out.println(GEEL + "Welkom op de Euromoon Manager App." + RESET + "\n");
+        System.out.println(GEEL + "Welkom op de Euromoon Manager App." + RESET );
 
         int keuzeMenu;
 
@@ -144,7 +144,7 @@ public class EuromoonApp {
             String invoerBestuurder;
 
             do{
-                System.out.print("Wil je een andere bestuurder registreren? (Ja/Nee): ");
+                System.out.print("\nWil je een andere bestuurder registreren? (Ja/Nee): ");
                 invoerBestuurder = sc.nextLine();
 
                 if (invoerBestuurder.equalsIgnoreCase("Ja")) {
@@ -157,7 +157,7 @@ public class EuromoonApp {
 
             // Maak drie stewards aan, vereiste voor een reis
 
-            System.out.println(GEEL + "Een reis heeft ook een minimum van drie stewards nodig." + RESET);
+            System.out.println(GEEL + "\nEen reis heeft ook een minimum van drie stewards nodig." + RESET);
             int i = 3;
             do {
                 System.out.println(GEEL + "Maak een steward aan, nog " + i + " te maken." + RESET);
@@ -168,12 +168,12 @@ public class EuromoonApp {
 
             // Maak andere persoonsleden als nodig
 
-            System.out.println(GEEL + "Een reis kan bagage personeel bevatten" + RESET);
+            System.out.println(GEEL + "\nEen reis kan bagage personeel bevatten" + RESET);
 
             String invoer;
 
             do{
-                System.out.print("\nWil je een bagage personeel toevoegen? (Ja/Nee): ");
+                System.out.print("Wil je een bagage personeel toevoegen? (Ja/Nee): ");
                 invoer = sc.nextLine();
 
                 if (invoer.equalsIgnoreCase("ja")){
@@ -202,8 +202,10 @@ public class EuromoonApp {
 
     private void treinAanReisKoppelen() {
 
+        System.out.println(GROEN + "\nKoppel een trein aan een reis" + RESET);
+
         try {
-            System.out.print("\nWelke type trein wil je aan deze reis koppelen? Je hebt de keuze tussen: 1. CLASS_373 2. CLASS_374. (Gebruik de index van de keuze om deze te selecteren): ");
+            System.out.print("\nWelke type trein wil je aan een reis koppelen? Je hebt de keuze tussen: \n1. CLASS_373 (Kan tot 12 wagons trekken) \n2. CLASS_374 (Kan tot 14 wagons trekken). \n(Gebruik de index van de keuze om deze te selecteren)\n--> ");
             int keuzeTypeTrein = Integer.parseInt(sc.nextLine());
             TypeLocomotief typeLocomotief =
                     switch (keuzeTypeTrein) {
@@ -214,7 +216,7 @@ public class EuromoonApp {
 
             Trein trein = new Trein(typeLocomotief);
 
-            System.out.println("Hier zijn alle mogelijke reizen: ");
+            System.out.println("\nHier zijn alle mogelijke reizen waaraan je deze trein kan koppelen: ");
 
 
             toonReis(lijstReis, false);
@@ -240,11 +242,12 @@ public class EuromoonApp {
     private void verkoopTicketAanPassagier() {
 
 
-        System.out.println(GROEN + "\nAan een ticket moet je een reis koppelen, hier zijn de mogelijke reizen: " + RESET);
+        System.out.println(GROEN + "\nVerkoop een ticket aan een passagier" + RESET);
+        System.out.println(GEEL + "Aan een ticket moet je een reis koppelen, hier zijn de mogelijke reizen: " + RESET);
 
         toonReis(lijstReisMetTrein, true);
 
-        System.out.print("Kies een reis. Gebruik de nummers om een reis te kiezen: ");
+        System.out.print("Kies een reis. \n(Gebruik de nummers om een reis te kiezen)\n--> ");
         int keuzeReis = Integer.parseInt(sc.nextLine());
         Reis reisKoppelenAanReis = lijstReis.get(keuzeReis);
 
@@ -252,7 +255,7 @@ public class EuromoonApp {
             System.err.println("Deze reis zit al vol, sorry.");
         } else {
 
-            System.out.println("Mogelijke passagiers aan wie je een ticket kan verkopen: ");
+            System.out.println("\nMogelijke passagiers aan wie je een ticket kan verkopen: ");
 
             toonPersoon(lijstPassagier);
 
@@ -260,8 +263,8 @@ public class EuromoonApp {
             int keuzePassagier = Integer.parseInt(sc.nextLine());
             Passagier ticketAanPassagierVerkopen = lijstPassagier.get(keuzePassagier);
 
-            System.out.println("In welke klasse wil je zitten ? Je hebt keuze tussen: 1. Eerste Klasse 2. Tweede Klasse (Gebruik de nummers om een klasse te selecteren)");
-            System.out.print("-->");
+            System.out.println("In welke klasse wilt" + ticketAanPassagierVerkopen.getVoornaam() + " " + ticketAanPassagierVerkopen.getAchternaam() + " zitten ? Er is keuze tussen: \n1. Eerste klasse \n2. Tweede klasse \n(Gebruik de nummers om een klasse te selecteren)\n-->");
+
             int keuzeKlasse = Integer.parseInt(sc.nextLine());
 
             Klasse klasse = switch (keuzeKlasse) {
@@ -271,7 +274,12 @@ public class EuromoonApp {
             };
 
             Ticket ticket = new Ticket(ticketAanPassagierVerkopen, reisKoppelenAanReis, klasse);
+            int grootteLijstTicketVoorAanpassing = lijstTicket.size();
             lijstTicket.add(ticket);
+
+            if (grootteLijstTicketVoorAanpassing != lijstTicket.size()) {
+                System.out.println(GROEN + "Ticket werd succesvol verkoopt aan " + ticketAanPassagierVerkopen.getVoornaam() + " " + ticketAanPassagierVerkopen.getAchternaam() + RESET);
+            }
 
         }
     }
@@ -307,8 +315,8 @@ public class EuromoonApp {
             ArrayList<Personeelslid> lijstBestuurder = r.getLijstBestuurder();
 
             System.out.println("[" + GROEN + "Reis"+lijstReis.indexOf(r) + ":" +  RESET +
-                    "\n\tTraject: " + r.getTraject() +
-                    "\n\tTijdstip:" + r.getTijdstip() +
+                    "\n\tTraject[ " + r.getTraject() + "]"+
+                    "\n\tTijdstip[ " + r.getTijdstip() + "]"+
                     "\n\tLijst bestuurders: ");
 
             for (Personeelslid b : lijstBestuurder) {
@@ -334,23 +342,29 @@ public class EuromoonApp {
                 ;
             }
 
-            System.out.println("\n\tLijst Bagage Personeel: ");
             ArrayList<Personeelslid> lijstPersoneel = r.getLijstPersoneelsleden();
-            for (Personeelslid pl : lijstPersoneel) {
-                System.out.println(
-                        GEEL + "\t\tBagage personeel" + lijstSteward.indexOf(pl) + ":" + RESET +
-                                "\n\t\t\tVoornaam bagage personeel: " + pl.getVoornaam() +
-                                "\n\t\t\tAchternaam bagage personeel: " + pl.getAchternaam() +
-                                "\n\t\t\tRijksregisternummer van de bagage personeel: " + pl.getRijksregisternummer() +
-                                "\n\t\t\tGeboortedatum van de bagage personeel: " + pl.getGeboortedatum() +
-                                "\n\t\t\tCertificaties: " + pl.getLijstCertificaties()
-                );
+
+            if (!lijstPersoneel.isEmpty()) {
+                System.out.println("\n\tLijst Bagage Personeel: ");
+
+                for (Personeelslid pl : lijstPersoneel) {
+                    System.out.println(
+                            GEEL + "\t\tBagage personeel" + lijstPersoneel.indexOf(pl) + ":" + RESET +
+                                    "\n\t\t\tVoornaam bagage personeel: " + pl.getVoornaam() +
+                                    "\n\t\t\tAchternaam bagage personeel: " + pl.getAchternaam() +
+                                    "\n\t\t\tRijksregisternummer van de bagage personeel: " + pl.getRijksregisternummer() +
+                                    "\n\t\t\tGeboortedatum van de bagage personeel: " + pl.getGeboortedatum() +
+                                    "\n\t\t\tCertificaties: " + pl.getLijstCertificaties()
+                    );
+                }
             }
+
+
 
             System.out.println("]\n");
 
             if (moetTreinBevatten) {
-                System.out.println("Type trein dat deze reis zal gebruiken: " + r.getTrein() + "\n");
+                System.out.println("Type trein dat deze reis zal gebruiken: " + r.getTrein().getTypeLocomotief() + ", met: " + r.getTrein().getAantalZitplaatsen() + " aantal zitplaatsen.\n");
             }
 
         }
@@ -415,9 +429,9 @@ public class EuromoonApp {
 
         String certificaties;
 
-        System.out.println("Wat zijn de certificaties van de steward ? Typ 'STOP' om te stoppen.");
+        System.out.println("\nWat zijn de certificaties van deze personeelslid ? Typ 'STOP' om te stoppen.");
         do {
-            System.out.print("Certificatie van de bestuurder: ");
+            System.out.print("Certificatie van de personeelslid: ");
             certificaties = sc.nextLine();
 
             if (!Objects.equals(certificaties, "STOP")) {
@@ -426,7 +440,7 @@ public class EuromoonApp {
                 p.voegCertificatie(certificaties);
             }
 
-        } while (!Objects.equals(certificaties, "STOP"));
+        } while (!certificaties.equalsIgnoreCase("STOP"));
     }
 
 
