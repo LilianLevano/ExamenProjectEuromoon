@@ -7,28 +7,24 @@ import java.util.ArrayList;
 
 public class Reis {
 
-    public static final String GROEN = "\u001B[32m";
-    public static final String GEEL = "\u001B[33m";
-    public static final String RESET = "\u001B[0m";
-    private Traject traject;
-    private Tijdstip tijdstip;
+
+    private final Traject traject;
+    private final Tijdstip tijdstip;
     private Trein trein;
     private final ArrayList<Personeelslid> lijstPersoneelsleden = new ArrayList<>();
     private final ArrayList<Personeelslid> lijstBestuurder = new ArrayList<>();
     private final ArrayList<Personeelslid> lijstSteward = new ArrayList<>();
-    private static int reisTeller = 0;
+
     private int ticketTeller = 0;
 
 
     public Reis(Traject traject, Tijdstip tijdstip) {
         this.traject = traject;
         this.tijdstip = tijdstip;
-        reisTeller++;
+
     }
 
-    public static String getReisTeller() {
-        return "Reis" + reisTeller;
-    }
+
 
 
     public ArrayList<Personeelslid> getLijstSteward() {
