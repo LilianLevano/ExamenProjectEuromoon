@@ -5,16 +5,16 @@ import java.util.ArrayList;
 
 public class Personeelslid extends Persoon{
 
-  private final ArrayList<String> lijstCertificaties = new ArrayList<>();
+    private final ArrayList<String> lijstCertificaties = new ArrayList<>();
 
 
 
-  private final String rol;
 
 
-    public Personeelslid(String voornaam, String achternaam, String rijksregisternummer, LocalDate geboortedatum, String rol) {
+
+    public Personeelslid(String voornaam, String achternaam, String rijksregisternummer, LocalDate geboortedatum) {
         super(voornaam, achternaam, rijksregisternummer, geboortedatum);
-        this.rol = rol;
+
 
     }
 
@@ -34,14 +34,12 @@ public class Personeelslid extends Persoon{
 
 
 
-    public String getRol() {
-        return rol;
-    }
+
 
     @Override
     public String toString() {
         return "Personeelsleed{" + super.toString() +
-                ", rol = " + rol +
+
                 ", lijstCertificaties = " + lijstCertificaties +
                 "} ";
     }

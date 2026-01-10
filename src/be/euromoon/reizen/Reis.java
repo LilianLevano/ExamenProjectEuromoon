@@ -82,7 +82,7 @@ public class Reis {
     @Override
     public String toString() {
         return "Reis{" +
-                  traject +
+                traject +
                 ", " + tijdstip +
                 ", " + trein +
                 ", lijstPersoneelsleden = " + lijstPersoneelsleden +
