@@ -23,15 +23,11 @@ public class Tijdstip {
         return aankomstPuntA;
     }
 
-    public void setAankomstPuntA(LocalDateTime aankomstPuntA) {
-        this.aankomstPuntA = aankomstPuntA;
-    }
+
 
     public LocalDateTime getAankomstPuntB() {
         return aankomstPuntB;
     }
 
-    public void setAankomstPuntB(LocalDateTime aankomstPuntB) {
-        this.aankomstPuntB = aankomstPuntB;
-    }
+
 }

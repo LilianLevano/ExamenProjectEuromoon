@@ -13,17 +13,13 @@ public class Traject {
         return startPunt;
     }
 
-    public void setStartPunt(String startPunt) {
-        this.startPunt = startPunt;
-    }
+
 
     public String getEindPunt() {
         return eindPunt;
     }
 
-    public void setEindPunt(String eindPunt) {
-        this.eindPunt = eindPunt;
-    }
+
 
     @Override
     public String toString() {

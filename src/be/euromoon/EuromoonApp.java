@@ -277,8 +277,10 @@ public class EuromoonApp {
             int grootteLijstTicketVoorAanpassing = lijstTicket.size();
             lijstTicket.add(ticket);
 
+
             if (grootteLijstTicketVoorAanpassing != lijstTicket.size()) {
                 System.out.println(GROEN + "Ticket werd succesvol verkoopt aan " + ticketAanPassagierVerkopen.getVoornaam() + " " + ticketAanPassagierVerkopen.getAchternaam() + RESET);
+                reisKoppelenAanReis.ticketGemaakt();
             }
 
         }
