@@ -3,7 +3,7 @@ package be.euromoon.persoon;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-public class Personeelsleed extends Persoon{
+public class Personeelslid extends Persoon{
 
   private final ArrayList<String> lijstCertificaties = new ArrayList<>();
   private final ArrayList<String> lijstVasteRol =  new ArrayList<>();
@@ -13,7 +13,7 @@ public class Personeelsleed extends Persoon{
   private final String rol;
 
 
-    public Personeelsleed(String voornaam, String achternaam, String rijksregisternummer, LocalDate geboortedatum, String rol) {
+    public Personeelslid(String voornaam, String achternaam, String rijksregisternummer, LocalDate geboortedatum, String rol) {
         super(voornaam, achternaam, rijksregisternummer, geboortedatum);
         this.rol = rol;
         lijstVasteRol.add("Conducteur");

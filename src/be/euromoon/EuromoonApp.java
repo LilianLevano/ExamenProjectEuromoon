@@ -1,7 +1,9 @@
 package be.euromoon;
 
 import be.euromoon.persoon.Passagier;
-import be.euromoon.persoon.Personeelsleed;
+import be.euromoon.persoon.Personeelslid;
+import be.euromoon.persoon.Persoon;
+import be.euromoon.persoon.TypePersoon;
 import be.euromoon.reizen.Reis;
 import be.euromoon.reizen.Tijdstip;
 import be.euromoon.reizen.Traject;
@@ -82,21 +84,18 @@ public class EuromoonApp {
 
     }
 
+
+
+    // -----------------FUNCTIES VOOR KEUZE MENU ----------------- //
+
     private void passagierRegistreren() {
 
         try {
 
-            System.out.print("Voornaam: ");
-            String voornaam = sc.nextLine();
-            System.out.print("Achternaam: ");
-            String achternaam = sc.nextLine();
-            System.out.print("Rijksregisternummer: ");
-            String rijksregisternummer = sc.nextLine();
-            System.out.println("Geboortedatum (Formaat: yyyy-MM-dd): ");
-            LocalDate geboortedatum = LocalDate.parse(sc.nextLine());
 
+            Passagier p = (Passagier) maakPersoon(TypePersoon.PASSAGIER, null);
             int grootteLijstVoorAanpassing = lijstPassagier.size();
-            Passagier p = new Passagier(voornaam, achternaam, rijksregisternummer, geboortedatum);
+
             lijstPassagier.add(p);
 
             if (grootteLijstVoorAanpassing != lijstPassagier.size()) {
@@ -110,65 +109,6 @@ public class EuromoonApp {
             System.err.println("Foutieve invoer: Je hebt een foute formaat ingegeven bij het geboortedatum. Passagier werd niet aangemaakt, probeer opnieuw.");
         }
     }
-
-    private Personeelsleed maakBestuurder() {
-        System.out.println(GEEL + "Een reis heeft minstens 1 bestuurder nodig." + RESET);
-        System.out.print("Voornaam van de bestuurder: ");
-        String voornaam = sc.nextLine();
-        System.out.print("Achternaam van de bestuurder: ");
-        String achternaam = sc.nextLine();
-        System.out.print("Rijksregisternummer van de bestuurder: ");
-        String rijksregisternummer = sc.nextLine();
-        System.out.print("Geboortedatum (Formaat: yyyy-MM-dd): ");
-        LocalDate geboortedatum = LocalDate.parse(sc.nextLine());
-
-        Personeelsleed bestuurder = new Personeelsleed(voornaam, achternaam, rijksregisternummer, geboortedatum, "Bestuurder");
-
-        String certificatieBestuurder;
-        System.out.println("Wat zijn de certificaties van de bestuurder ? Typ 'STOP' om te stoppen.");
-        do {
-            System.out.print("Certificatie van de bestuurder: ");
-            certificatieBestuurder = sc.nextLine();
-
-            if (!Objects.equals(certificatieBestuurder, "STOP")) {
-                bestuurder.voegCertificatie(certificatieBestuurder);
-            }
-        } while (!Objects.equals(certificatieBestuurder, "STOP"));
-
-        return bestuurder;
-    }
-
-    private Personeelsleed maakSteward() {
-
-
-        System.out.print("Voornaam van de steward: ");
-        String voornaamSteward = sc.nextLine();
-        System.out.print("Achternaam van de steward: ");
-        String achternaamSteward = sc.nextLine();
-        System.out.print("Rijksregisternummer van de steward: ");
-        String rijksregisternummerSteward = sc.nextLine();
-        System.out.print("Geboortedatum (Formaat: yyyy-MM-dd): ");
-        LocalDate geboortedatumSteward = LocalDate.parse(sc.nextLine());
-
-        Personeelsleed steward = new Personeelsleed(voornaamSteward, achternaamSteward, rijksregisternummerSteward, geboortedatumSteward, "Steward");
-
-        String certificatieSteward;
-
-        System.out.println("Wat zijn de certificaties van de steward ? Typ 'STOP' om te stoppen.");
-        do {
-            System.out.print("Certificatie van de bestuurder: ");
-            certificatieSteward = sc.nextLine();
-
-            if (!Objects.equals(certificatieSteward, "STOP")) {
-                steward.voegCertificatie(certificatieSteward);
-            }
-
-        } while (!Objects.equals(certificatieSteward, "STOP"));
-
-
-        return steward;
-    }
-
 
     private void maakReis() {
         try {
@@ -190,7 +130,7 @@ public class EuromoonApp {
             Reis r = new Reis(t, ti);
 
             /*Maak een Bestuurder, er moet er minstens 1 zijn per reis  */
-            Personeelsleed bestuurder = maakBestuurder();
+            Personeelslid bestuurder = maakBestuurder();
             r.voegBestuurderToe(bestuurder);
 
 
@@ -200,7 +140,7 @@ public class EuromoonApp {
             int i = 3;
             do {
                 System.out.println(GEEL + "Maak een steward aan, nog " + i + " te maken." + RESET);
-                Personeelsleed steward = maakSteward();
+                Personeelslid steward = maakSteward();
                 r.voegStewardToe(steward);
                 i--;
             } while (r.sizeLijstSteward() != 3);
@@ -219,14 +159,6 @@ public class EuromoonApp {
             System.err.println("Foutieve invoer: Je hebt een foute formaat ingegeven bij een van de tijdstip. Reis werd niet aangemaakt, probeer opnieuw.");
         }
 
-
-    }
-
-    private void toonLijsten() {
-        System.out.println(lijstPassagier);
-
-        System.out.println(lijstReis);
-        System.out.println(lijstTicket);
     }
 
     private void treinAanReisKoppelen() {
@@ -246,53 +178,7 @@ public class EuromoonApp {
             System.out.println("Hier zijn alle mogelijke reizen: ");
 
 
-            for (Reis r : lijstReis) {
-                ArrayList<Personeelsleed> lijstBestuurder = r.getLijstBestuurder();
-
-                System.out.println("[" + GROEN + "Reis"+lijstReis.indexOf(r) + ":" +  RESET +
-                        "\n\tTraject: " + r.getTraject() +
-                        "\n\tTijdstip:" + r.getTijdstip() +
-                        "\n\tLijst bestuurders: ");
-
-                for (Personeelsleed b : lijstBestuurder) {
-                    System.out.println(
-                            GEEL + "\t\tBestuurder" + lijstBestuurder.indexOf(b) + ":" + RESET +
-                                    "\n\t\t\tVoornaam bestuurder: " + b.getVoornaam() +
-                                    "\n\t\t\tAchternaam bestuurder: " + b.getAchternaam() +
-                                    "\n\t\t\tRijksregisternummer van de bestuurder: " + b.getRijksregisternummer() +
-                                    "\n\t\t\tGeboortedatum van de bestuurder: " + b.getGeboortedatum() +
-                                    "\n\t\t\tCertificaties: " + b.getLijstCertificaties());
-
-                }
-                System.out.println("\n\tLijst stewards: ");
-                ArrayList<Personeelsleed> lijstSteward = r.getLijstSteward();
-                for (Personeelsleed s : lijstSteward) {
-                    System.out.println(
-                            GEEL + "\t\tSteward" + lijstSteward.indexOf(s) + ":" + RESET +
-                                    "\n\t\t\tVoornaam steward: " + s.getVoornaam() +
-                                    "\n\t\t\tAchternaam steward: " + s.getAchternaam() +
-                                    "\n\t\t\tRijksregisternummer van de steward: " + s.getRijksregisternummer() +
-                                    "\n\t\t\tGeboortedatum van de steward: " + s.getGeboortedatum() +
-                                    "\n\t\t\tCertificaties: " + s.getLijstCertificaties())
-                                    ;
-                }
-
-                System.out.println("\n\tLijst algemene personeelsleden: ");
-                ArrayList<Personeelsleed> lijstPersoneel = r.getLijstPersoneelsleden();
-                for (Personeelsleed pl : lijstPersoneel) {
-                    System.out.println(
-                            GEEL + "\t\tPersoneelsleed" + lijstSteward.indexOf(pl) + ":" + RESET +
-                                    "\n\t\t\tVoornaam personeelsleed: " + pl.getVoornaam() +
-                                    "\n\t\t\tAchternaam personeelsleed: " + pl.getAchternaam() +
-                                    "\n\t\t\tRijksregisternummer van de personeelsleed: " + pl.getRijksregisternummer() +
-                                    "\n\t\t\tGeboortedatum van de personeelsleed: " + pl.getGeboortedatum() +
-                                    "\n\t\t\tCertificaties: " + pl.getLijstCertificaties()
-                                    );
-                }
-
-                System.out.println("]\n");
-
-            }
+            toonReis(lijstReis, false);
 
 
             System.out.print("Aan welke reis wil je deze trein koppelen? (Gebruik de index van de reis.): ");
@@ -310,61 +196,14 @@ public class EuromoonApp {
         }
     }
 
+
+
     private void verkoopTicketAanPassagier() {
 
 
         System.out.println("Aan een ticket moet je een reis koppelen, hier zijn de mogelijke reizen: ");
 
-
-        for (Reis r : lijstReisMetTrein) {
-            ArrayList<Personeelsleed> lijstBestuurder = r.getLijstBestuurder();
-
-            System.out.println("[" + GROEN + "Reis"+lijstReis.indexOf(r) + ":" +  RESET +
-                    "\n\tTraject: " + r.getTraject() +
-                    "\n\tTijdstip:" + r.getTijdstip() +
-                    "\n\tLijst bestuurders: ");
-
-            for (Personeelsleed b : lijstBestuurder) {
-                System.out.println(
-                        GEEL + "\t\tBestuurder" + lijstBestuurder.indexOf(b) + ":" + RESET +
-                                "\n\t\t\tVoornaam bestuurder: " + b.getVoornaam() +
-                                "\n\t\t\tAchternaam bestuurder: " + b.getAchternaam() +
-                                "\n\t\t\tRijksregisternummer van de bestuurder: " + b.getRijksregisternummer() +
-                                "\n\t\t\tGeboortedatum van de bestuurder: " + b.getGeboortedatum() +
-                                "\n\t\t\tCertificaties: " + b.getLijstCertificaties());
-
-            }
-            System.out.println("\n\tLijst stewards: ");
-            ArrayList<Personeelsleed> lijstSteward = r.getLijstSteward();
-            for (Personeelsleed s : lijstSteward) {
-                System.out.println(
-                        GEEL + "\t\tSteward" + lijstSteward.indexOf(s) + ":" + RESET +
-                                "\n\t\t\tVoornaam steward: " + s.getVoornaam() +
-                                "\n\t\t\tAchternaam steward: " + s.getAchternaam() +
-                                "\n\t\t\tRijksregisternummer van de steward: " + s.getRijksregisternummer() +
-                                "\n\t\t\tGeboortedatum van de steward: " + s.getGeboortedatum() +
-                                "\n\t\t\tCertificaties: " + s.getLijstCertificaties())
-                ;
-            }
-
-            System.out.println("\n\tLijst algemene personeelsleden: ");
-            ArrayList<Personeelsleed> lijstPersoneel = r.getLijstPersoneelsleden();
-            for (Personeelsleed pl : lijstPersoneel) {
-                System.out.println(
-                        GEEL + "\t\tPersoneelsleed" + lijstSteward.indexOf(pl) + ":" + RESET +
-                                "\n\t\t\tVoornaam personeelsleed: " + pl.getVoornaam() +
-                                "\n\t\t\tAchternaam personeelsleed: " + pl.getAchternaam() +
-                                "\n\t\t\tRijksregisternummer van de personeelsleed: " + pl.getRijksregisternummer() +
-                                "\n\t\t\tGeboortedatum van de personeelsleed: " + pl.getGeboortedatum() +
-                                "\n\t\t\tCertificaties: " + pl.getLijstCertificaties()
-                );
-            }
-
-            System.out.println("]\n");
-
-            System.out.println("Type trein dat deze reis zal gebruiken: " + r.getTrein() + "\n");
-
-        }
+        toonReis(lijstReisMetTrein, true);
 
             System.out.print("Kies een reis. Gebruik de nummers om een reis te kiezen: ");
             int keuzeReis = Integer.parseInt(sc.nextLine());
@@ -376,17 +215,7 @@ public class EuromoonApp {
 
                 System.out.println("Mogelijke passagiers aan wie je een ticket kan verkopen: ");
 
-
-                for (Passagier p : lijstPassagier) {
-                    System.out.println(
-                            GEEL + "Passagier" + lijstPassagier.indexOf(p) + ":" + RESET +
-                                    "\nVoornaam passagier: " + p.getVoornaam() +
-                                    "\nAchternaam passagier: " + p.getAchternaam() +
-                                    "\nRijksregisternummer van de passagier: " + p.getRijksregisternummer() +
-                                    "\nGeboortedatum van de passagier: " + p.getGeboortedatum() +
-                                    "]\n");
-                }
-
+                toonPersoon(lijstPassagier);
 
                 System.out.print("Kies een passagier. Gebruik de nummer van de gewenste passagier om deze te selecteren: ");
                 int keuzePassagier = Integer.parseInt(sc.nextLine());
@@ -406,7 +235,167 @@ public class EuromoonApp {
                 lijstTicket.add(ticket);
 
             }
+    }
+
+    private void toonLijsten() {
+        System.out.println(lijstPassagier);
+
+        System.out.println(lijstReis);
+        System.out.println(lijstTicket);
+    }
+
+    // -----------------FUNCTIES VOOR KEUZE MENU ----------------- //
+
+
+
+
+    private void toonPersoon(ArrayList<Passagier> lijstPassagier) {
+
+        for (Passagier p : lijstPassagier) {
+            System.out.println(
+                    GEEL + "Passagier" + lijstPassagier.indexOf(p) + ":" + RESET +
+                            "\nVoornaam passagier: " + p.getVoornaam() +
+                            "\nAchternaam passagier: " + p.getAchternaam() +
+                            "\nRijksregisternummer van de passagier: " + p.getRijksregisternummer() +
+                            "\nGeboortedatum van de passagier: " + p.getGeboortedatum() +
+                            "\n");
+        }
 
     }
+
+    private void toonReis(ArrayList<Reis> lijstReis, boolean moetTreinBevatten){
+        for (Reis r : lijstReis) {
+            ArrayList<Personeelslid> lijstBestuurder = r.getLijstBestuurder();
+
+            System.out.println("[" + GROEN + "Reis"+lijstReis.indexOf(r) + ":" +  RESET +
+                    "\n\tTraject: " + r.getTraject() +
+                    "\n\tTijdstip:" + r.getTijdstip() +
+                    "\n\tLijst bestuurders: ");
+
+            for (Personeelslid b : lijstBestuurder) {
+                System.out.println(
+                        GEEL + "\t\tBestuurder" + lijstBestuurder.indexOf(b) + ":" + RESET +
+                                "\n\t\t\tVoornaam bestuurder: " + b.getVoornaam() +
+                                "\n\t\t\tAchternaam bestuurder: " + b.getAchternaam() +
+                                "\n\t\t\tRijksregisternummer van de bestuurder: " + b.getRijksregisternummer() +
+                                "\n\t\t\tGeboortedatum van de bestuurder: " + b.getGeboortedatum() +
+                                "\n\t\t\tCertificaties: " + b.getLijstCertificaties());
+
+            }
+            System.out.println("\n\tLijst stewards: ");
+            ArrayList<Personeelslid> lijstSteward = r.getLijstSteward();
+            for (Personeelslid s : lijstSteward) {
+                System.out.println(
+                        GEEL + "\t\tSteward" + lijstSteward.indexOf(s) + ":" + RESET +
+                                "\n\t\t\tVoornaam steward: " + s.getVoornaam() +
+                                "\n\t\t\tAchternaam steward: " + s.getAchternaam() +
+                                "\n\t\t\tRijksregisternummer van de steward: " + s.getRijksregisternummer() +
+                                "\n\t\t\tGeboortedatum van de steward: " + s.getGeboortedatum() +
+                                "\n\t\t\tCertificaties: " + s.getLijstCertificaties())
+                ;
+            }
+
+            System.out.println("\n\tLijst algemene personeelsleden: ");
+            ArrayList<Personeelslid> lijstPersoneel = r.getLijstPersoneelsleden();
+            for (Personeelslid pl : lijstPersoneel) {
+                System.out.println(
+                        GEEL + "\t\tPersoneelsleed" + lijstSteward.indexOf(pl) + ":" + RESET +
+                                "\n\t\t\tVoornaam personeelsleed: " + pl.getVoornaam() +
+                                "\n\t\t\tAchternaam personeelsleed: " + pl.getAchternaam() +
+                                "\n\t\t\tRijksregisternummer van de personeelsleed: " + pl.getRijksregisternummer() +
+                                "\n\t\t\tGeboortedatum van de personeelsleed: " + pl.getGeboortedatum() +
+                                "\n\t\t\tCertificaties: " + pl.getLijstCertificaties()
+                );
+            }
+
+            System.out.println("]\n");
+
+            if (moetTreinBevatten) {
+                System.out.println("Type trein dat deze reis zal gebruiken: " + r.getTrein() + "\n");
+            }
+
+        }
+    }
+
+
+    private Persoon maakPersoon(TypePersoon typePersoon, String rol) {
+
+        if (typePersoon == TypePersoon.PASSAGIER) {
+            System.out.print("Voornaam: ");
+            String voornaam = sc.nextLine();
+            System.out.print("Achternaam: ");
+            String achternaam = sc.nextLine();
+            System.out.print("Rijksregisternummer: ");
+            String rijksregisternummer = sc.nextLine();
+            System.out.println("Geboortedatum (Formaat: yyyy-MM-dd): ");
+            LocalDate geboortedatum = LocalDate.parse(sc.nextLine());
+
+            return new Passagier(voornaam, achternaam, rijksregisternummer, geboortedatum);
+        }else if (typePersoon == TypePersoon.PERSONEELSLID) {
+
+            System.out.print("Voornaam van de " + rol + " :");
+            String voornaam = sc.nextLine();
+            System.out.print("Achternaam van de " + rol + " :");
+            String achternaam = sc.nextLine();
+            System.out.print("Rijksregisternummer van de " + rol + " :");
+            String rijksregisternummer = sc.nextLine();
+            System.out.print("Geboortedatum van de " + rol + " (Formaat: yyyy-MM-dd): ");
+            LocalDate geboortedatum = LocalDate.parse(sc.nextLine());
+
+            return new Personeelslid(voornaam, achternaam, rijksregisternummer, geboortedatum, rol);
+        }
+
+        return null;
+    }
+
+    private Personeelslid maakBestuurder() {
+        System.out.println(GEEL + "Een reis heeft minstens 1 bestuurder nodig." + RESET);
+
+
+        Personeelslid bestuurder = (Personeelslid) maakPersoon(TypePersoon.PERSONEELSLID, "Bestuurder");
+
+        String certificatieBestuurder;
+        System.out.println("Wat zijn de certificaties van de bestuurder ? Typ 'STOP' om te stoppen.");
+        do {
+            System.out.print("Certificatie van de bestuurder: ");
+            certificatieBestuurder = sc.nextLine();
+
+            if (!Objects.equals(certificatieBestuurder, "STOP")) {
+
+                assert bestuurder != null; // checkt dat "bestuurder" niet nul is --> als het null is dan gebeurt er niets
+                bestuurder.voegCertificatie(certificatieBestuurder);
+            }
+        } while (!Objects.equals(certificatieBestuurder, "STOP"));
+
+        return bestuurder;
+    }
+
+    private Personeelslid maakSteward() {
+
+
+
+
+        Personeelslid steward = (Personeelslid) maakPersoon(TypePersoon.PERSONEELSLID, "Steward");
+
+        String certificatieSteward;
+
+        System.out.println("Wat zijn de certificaties van de steward ? Typ 'STOP' om te stoppen.");
+        do {
+            System.out.print("Certificatie van de bestuurder: ");
+            certificatieSteward = sc.nextLine();
+
+            if (!Objects.equals(certificatieSteward, "STOP")) {
+
+                assert steward != null;
+                steward.voegCertificatie(certificatieSteward);
+            }
+
+        } while (!Objects.equals(certificatieSteward, "STOP"));
+
+
+        return steward;
+    }
+
+
 }
 

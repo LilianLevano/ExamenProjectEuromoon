@@ -1,6 +1,6 @@
 package be.euromoon.reizen;
 
-import be.euromoon.persoon.Personeelsleed;
+import be.euromoon.persoon.Personeelslid;
 import be.euromoon.trein.Trein;
 
 import java.util.ArrayList;
@@ -13,9 +13,9 @@ public class Reis {
     private Traject traject;
     private Tijdstip tijdstip;
     private Trein trein;
-    private final ArrayList<Personeelsleed> lijstPersoneelsleden = new ArrayList<>();
-    private final ArrayList<Personeelsleed> lijstBestuurder = new ArrayList<>();
-    private final ArrayList<Personeelsleed> lijstSteward = new ArrayList<>();
+    private final ArrayList<Personeelslid> lijstPersoneelsleden = new ArrayList<>();
+    private final ArrayList<Personeelslid> lijstBestuurder = new ArrayList<>();
+    private final ArrayList<Personeelslid> lijstSteward = new ArrayList<>();
     private static int reisTeller = 0;
     private int ticketTeller = 0;
 
@@ -31,15 +31,15 @@ public class Reis {
     }
 
 
-    public ArrayList<Personeelsleed> getLijstSteward() {
+    public ArrayList<Personeelslid> getLijstSteward() {
         return lijstSteward;
     }
 
-    public ArrayList<Personeelsleed> getLijstPersoneelsleden() {
+    public ArrayList<Personeelslid> getLijstPersoneelsleden() {
         return lijstPersoneelsleden;
     }
 
-    public ArrayList<Personeelsleed> getLijstBestuurder() {
+    public ArrayList<Personeelslid> getLijstBestuurder() {
         return lijstBestuurder;
     }
 
@@ -59,15 +59,15 @@ public class Reis {
         return lijstSteward.size();
     }
 
-    public void voegPersoneelToe(Personeelsleed personeelsleden) {
+    public void voegPersoneelToe(Personeelslid personeelsleden) {
         lijstPersoneelsleden.add(personeelsleden);
     }
 
-    public void voegBestuurderToe(Personeelsleed bestuurder) {
+    public void voegBestuurderToe(Personeelslid bestuurder) {
         lijstBestuurder.add(bestuurder);
     }
 
-    public void voegStewardToe(Personeelsleed steward) {
+    public void voegStewardToe(Personeelslid steward) {
         lijstSteward.add(steward);
     }
 
