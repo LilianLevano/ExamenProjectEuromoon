@@ -14,11 +14,13 @@ import be.euromoon.tickets.Klasse;
 import be.euromoon.tickets.Ticket;
 import be.euromoon.trein.Trein;
 import be.euromoon.trein.TypeLocomotief;
+import be.euromoon.trein.Wagon;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Scanner;
 
@@ -219,7 +221,7 @@ public class EuromoonApp {
             System.out.println("\nHier zijn alle mogelijke reizen waaraan je deze trein kan koppelen: ");
 
 
-            toonReis(lijstReis, false);
+            toonReis(lijstReis, false, true);
 
 
             System.out.print("Aan welke reis wil je deze trein koppelen? \n(Gebruik de index van de reis.)\n--> ");
@@ -245,7 +247,7 @@ public class EuromoonApp {
         System.out.println(GROEN + "\nVerkoop een ticket aan een passagier" + RESET);
         System.out.println(GEEL + "Aan een ticket moet je een reis koppelen, hier zijn de mogelijke reizen: " + RESET);
 
-        toonReis(lijstReisMetTrein, true);
+        toonReis(lijstReisMetTrein, true, false);
 
         System.out.print("Kies een reis. \n(Gebruik de nummers om een reis te kiezen)\n--> ");
         int keuzeReis = Integer.parseInt(sc.nextLine());
@@ -272,6 +274,33 @@ public class EuromoonApp {
                 case 2 -> Klasse.TWEEDEKLASSE;
                 default -> null;
             };
+
+            System.out.println("In welke wagon wilt deze persoon zitten?\nHier zijn alle mogelijke wagons:\n");
+            ArrayList<Wagon> lijstWagon = reisKoppelenAanReis.getTrein().getLijstWagons();
+
+            for (Wagon w : lijstWagon) {
+                System.out.println(GROEN +"Wagon"+ lijstWagon.indexOf(w) + ":" + RESET + "\n");
+                w.toonPassagierInWagon();
+            }
+
+            boolean fouteKeuzeWagon = true;
+
+            do{
+                System.out.print("\nGebruik de nummer van het wagon die je wilt selecteren\n-->");
+                int keuzeWagon = Integer.parseInt(sc.nextLine());
+                Wagon passagierAanWagonToevoegen = lijstWagon.get(keuzeWagon);
+
+                if ((passagierAanWagonToevoegen.getLijstPassagier().size() + 1) > 80)  {
+                    System.err.println("Deze wagon zit al vol. Kies een andere wagon.\n");
+                }else{
+                    passagierAanWagonToevoegen.voegPassagierToeAanWagon(ticketAanPassagierVerkopen);
+                    fouteKeuzeWagon = false;
+                }
+            }while (fouteKeuzeWagon);
+
+
+
+
 
             Ticket ticket = new Ticket(ticketAanPassagierVerkopen, reisKoppelenAanReis, klasse);
             int grootteLijstTicketVoorAanpassing = lijstTicket.size();
@@ -312,7 +341,7 @@ public class EuromoonApp {
 
     }
 
-    private void toonReis(ArrayList<Reis> lijstReis, boolean moetTreinBevatten){
+    private void toonReis(ArrayList<Reis> lijstReis, boolean moetTreinBevatten, boolean moetWagonBevatten){
         for (Reis r : lijstReis) {
             ArrayList<Personeelslid> lijstBestuurder = r.getLijstBestuurder();
 
@@ -361,12 +390,23 @@ public class EuromoonApp {
                 }
             }
 
-
-
             System.out.println("]\n");
 
             if (moetTreinBevatten) {
                 System.out.println("Type trein dat deze reis zal gebruiken: " + r.getTrein().getTypeLocomotief() + ", met: " + r.getTrein().getAantalZitplaatsen() + " aantal zitplaatsen.\n");
+
+                if (moetWagonBevatten){
+                    System.out.println("Lijst wagons:\n");
+                    ArrayList<Wagon> lijstWagon = r.getTrein().getLijstWagons();
+
+                    for (Wagon w : lijstWagon) {
+                        System.out.println(GROEN +"\tWagon"+ lijstWagon.indexOf(w) + ":" + RESET + "\n");
+                        w.toonPassagierInWagon();
+
+                    }
+                }
+
+
             }
 
         }
@@ -398,8 +438,6 @@ public class EuromoonApp {
 
     private Personeelslid maakBestuurder() {
 
-
-
         Personeelslid p = (Personeelslid) maakPersoon(TypePersoon.BESTUURDER);
         Bestuurder bestuurder = (Bestuurder) p;
 
@@ -418,6 +456,7 @@ public class EuromoonApp {
     }
 
     private Personeelslid maakBagagePersoneel() {
+
         Personeelslid p = (Personeelslid) maakPersoon(TypePersoon.BAGAGEPERSONEEL);
         BagagePersoneel bagagePersoneel = (BagagePersoneel) p;
 
