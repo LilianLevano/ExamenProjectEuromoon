@@ -17,6 +17,11 @@ Deze applicatie laat toe om verschillende trein-gerelateerde objecten aan te mak
 2. Ga naar `src/Main.java`  
 3. Run de `main`-methode
 
+## Externe bronnen
+
+- Oude, eigen projecten
+- Cursus 
+
 ## Auteur
 
 - Lilian Levano
