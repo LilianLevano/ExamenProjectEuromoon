@@ -24,6 +24,11 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Scanner;
 
+import static be.euromoon.persoon.Passagier.toonPassagier;
+import static be.euromoon.persoon.typePersoneel.BagagePersoneel.toonBagagePersoneel;
+import static be.euromoon.persoon.typePersoneel.Bestuurder.toonBestuurder;
+import static be.euromoon.persoon.typePersoneel.Steward.toonSteward;
+
 public class EuromoonApp {
 
     public static final String GROEN = "\u001B[32m";
@@ -79,7 +84,7 @@ public class EuromoonApp {
                     verkoopTicketAanPassagier();
                     break;
                 case 5:
-
+                    toonPersoon(lijstPassagier);
                     break;
 
                 case 8:
@@ -328,69 +333,32 @@ public class EuromoonApp {
 
 
     private void toonPersoon(ArrayList<Passagier> lijstPassagier) {
-
-        for (Passagier p : lijstPassagier) {
-            System.out.println(
-                    GEEL + "Passagier" + lijstPassagier.indexOf(p) + ":" + RESET +
-                            "\nVoornaam passagier: " + p.getVoornaam() +
-                            "\nAchternaam passagier: " + p.getAchternaam() +
-                            "\nRijksregisternummer van de passagier: " + p.getRijksregisternummer() +
-                            "\nGeboortedatum van de passagier: " + p.getGeboortedatum() +
-                            "\n");
-        }
-
+           toonPassagier(lijstPassagier);
     }
 
     private void toonReis(ArrayList<Reis> lijstReis, boolean moetTreinBevatten, boolean moetWagonBevatten){
         for (Reis r : lijstReis) {
-            ArrayList<Personeelslid> lijstBestuurder = r.getLijstBestuurder();
+
 
             System.out.println("[" + GROEN + "Reis"+lijstReis.indexOf(r) + ":" +  RESET +
                     "\n\tTraject[ " + r.getTraject() + "]"+
                     "\n\tTijdstip[ " + r.getTijdstip() + "]"+
                     "\n\tLijst bestuurders: ");
 
-            for (Personeelslid b : lijstBestuurder) {
-                System.out.println(
-                        GEEL + "\t\tBestuurder" + lijstBestuurder.indexOf(b) + ":" + RESET +
-                                "\n\t\t\tVoornaam bestuurder: " + b.getVoornaam() +
-                                "\n\t\t\tAchternaam bestuurder: " + b.getAchternaam() +
-                                "\n\t\t\tRijksregisternummer van de bestuurder: " + b.getRijksregisternummer() +
-                                "\n\t\t\tGeboortedatum van de bestuurder: " + b.getGeboortedatum() +
-                                "\n\t\t\tCertificaties: " + b.getLijstCertificaties());
+            ArrayList<Personeelslid> lijstBestuurder = r.getLijstBestuurder();
+            toonBestuurder(lijstBestuurder);
 
-            }
+
             System.out.println("\n\tLijst stewards: ");
             ArrayList<Personeelslid> lijstSteward = r.getLijstSteward();
-            for (Personeelslid s : lijstSteward) {
-                System.out.println(
-                        GEEL + "\t\tSteward" + lijstSteward.indexOf(s) + ":" + RESET +
-                                "\n\t\t\tVoornaam steward: " + s.getVoornaam() +
-                                "\n\t\t\tAchternaam steward: " + s.getAchternaam() +
-                                "\n\t\t\tRijksregisternummer van de steward: " + s.getRijksregisternummer() +
-                                "\n\t\t\tGeboortedatum van de steward: " + s.getGeboortedatum() +
-                                "\n\t\t\tCertificaties: " + s.getLijstCertificaties())
-                ;
-            }
+            toonSteward(lijstSteward);
+
 
             ArrayList<Personeelslid> lijstPersoneel = r.getLijstPersoneelsleden();
-
-            if (!lijstPersoneel.isEmpty()) {
-                System.out.println("\n\tLijst Bagage Personeel: ");
-
-                for (Personeelslid pl : lijstPersoneel) {
-                    System.out.println(
-                            GEEL + "\t\tBagage personeel" + lijstPersoneel.indexOf(pl) + ":" + RESET +
-                                    "\n\t\t\tVoornaam bagage personeel: " + pl.getVoornaam() +
-                                    "\n\t\t\tAchternaam bagage personeel: " + pl.getAchternaam() +
-                                    "\n\t\t\tRijksregisternummer van de bagage personeel: " + pl.getRijksregisternummer() +
-                                    "\n\t\t\tGeboortedatum van de bagage personeel: " + pl.getGeboortedatum() +
-                                    "\n\t\t\tCertificaties: " + pl.getLijstCertificaties()
-                    );
-                }
-            }
-
+            toonBagagePersoneel(lijstPersoneel);
             System.out.println("]\n");
+
+
 
             if (moetTreinBevatten) {
                 System.out.println("Type trein dat deze reis zal gebruiken: " + r.getTrein().getTypeLocomotief() + ", met: " + r.getTrein().getAantalZitplaatsen() + " aantal zitplaatsen.\n");
