@@ -1,5 +1,7 @@
 package be.euromoon.tickets;
 
-public enum Klasse {
+import java.io.Serializable;
+
+public enum Klasse implements Serializable {
     EERSTEKLASSE, TWEEDEKLASSE
 }

@@ -1,6 +1,8 @@
 package be.euromoon.trein;
 
-public enum TypeLocomotief {
+import java.io.Serializable;
+
+public enum TypeLocomotief implements Serializable {
 
     CLASS_373(12), CLASS_374(14);
 

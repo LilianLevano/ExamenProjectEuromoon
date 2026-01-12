@@ -2,13 +2,14 @@ package be.euromoon.persoon.typePersoneel;
 
 import be.euromoon.persoon.Personeelslid;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
 import static be.euromoon.EuromoonApp.GEEL;
 import static be.euromoon.EuromoonApp.RESET;
 
-public class Bestuurder extends Personeelslid {
+public class Bestuurder extends Personeelslid implements Serializable {
     public Bestuurder(String voornaam, String achternaam, String rijksregisternummer, LocalDate geboortedatum) {
         super(voornaam, achternaam, rijksregisternummer, geboortedatum);
     }

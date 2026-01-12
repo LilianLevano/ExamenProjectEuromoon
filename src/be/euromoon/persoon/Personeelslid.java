@@ -1,9 +1,10 @@
 package be.euromoon.persoon;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-public class Personeelslid extends Persoon{
+public class Personeelslid extends Persoon implements Serializable {
 
     private final ArrayList<String> lijstCertificaties = new ArrayList<>();
 

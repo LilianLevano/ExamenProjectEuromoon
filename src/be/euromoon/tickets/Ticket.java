@@ -3,7 +3,14 @@ package be.euromoon.tickets;
 import be.euromoon.persoon.Passagier;
 import be.euromoon.reizen.Reis;
 
-public class Ticket {
+import java.io.Serializable;
+import java.util.ArrayList;
+
+import static be.euromoon.EuromoonApp.lijstPassagier;
+import static be.euromoon.EuromoonApp.toonReis;
+
+
+public class Ticket implements Serializable {
 
     private Passagier passagier;
     private Reis reis;
@@ -23,7 +30,7 @@ public class Ticket {
     public void setPassagier(Passagier passagier) {
         this.passagier = passagier;
     }
-    public Reis getReizen() {
+    public Reis getReis() {
         return reis;
     }
     public void setReizen(Reis reis) {
@@ -34,6 +41,20 @@ public class Ticket {
     }
     public void setKlasse(Klasse klasse) {
         this.klasse = klasse;
+    }
+
+
+    public String ticketWegschrijven(){
+
+        return passagier.getAchternaam() + " " + passagier.getVoornaam();
+    }
+
+    public static void toonTicket(ArrayList<Ticket> tickets){
+
+        for(Ticket t:tickets){
+            Passagier.toonPassagier(lijstPassagier);
+
+        }
     }
 
     @Override

@@ -1,4 +1,4 @@
-# Examen Prooject Euromoon
+# Examen Project Euromoon
 
 Een Java-console applicatie om reizen en bijhorende objecten te beheren.
 Deze applicatie werd ontwikkeld met Java 25.
@@ -25,4 +25,4 @@ Deze applicatie laat toe om verschillende trein-gerelateerde objecten aan te mak
 ## Auteur
 
 - Lilian Levano
-- Eerstejaarstudent in het Graduaat in het Programmeren
+- Eerstejaarsstudent in het Graduaat in het Programmeren

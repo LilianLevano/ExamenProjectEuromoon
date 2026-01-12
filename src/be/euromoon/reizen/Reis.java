@@ -3,9 +3,10 @@ package be.euromoon.reizen;
 import be.euromoon.persoon.Personeelslid;
 import be.euromoon.trein.Trein;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Reis {
+public class Reis implements Serializable {
 
 
     private final Traject traject;

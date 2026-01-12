@@ -16,18 +16,25 @@ import be.euromoon.trein.Trein;
 import be.euromoon.trein.TypeLocomotief;
 import be.euromoon.trein.Wagon;
 
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.lang.reflect.Array;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
-import java.util.HashSet;
+
 import java.util.Objects;
 import java.util.Scanner;
 
 import static be.euromoon.persoon.Passagier.toonPassagier;
+
 import static be.euromoon.persoon.typePersoneel.BagagePersoneel.toonBagagePersoneel;
 import static be.euromoon.persoon.typePersoneel.Bestuurder.toonBestuurder;
 import static be.euromoon.persoon.typePersoneel.Steward.toonSteward;
+import static be.euromoon.tickets.Ticket.toonTicket;
 
 public class EuromoonApp {
 
@@ -35,11 +42,13 @@ public class EuromoonApp {
     public static final String GEEL = "\u001B[33m";
     public static final String RESET = "\u001B[0m";
     Scanner sc = new Scanner(System.in);
-    private final ArrayList<Passagier> lijstPassagier = new ArrayList<>();
 
+    public static final ArrayList<Passagier> lijstPassagier = new ArrayList<>();
     private final ArrayList<Reis> lijstReis = new ArrayList<>();
     private final ArrayList<Ticket> lijstTicket = new ArrayList<>();
     private final ArrayList<Reis> lijstReisMetTrein = new ArrayList<>();
+    private final ArrayList<Passagier> lijstPassagierMetTicket = new ArrayList<>();
+    private final ArrayList<Reis> lijstReisMetTreinMetTicket = new ArrayList<>();
 
     public void start() {
         System.out.println(GEEL + "Welkom op de Euromoon Manager App." + RESET );
@@ -84,7 +93,7 @@ public class EuromoonApp {
                     verkoopTicketAanPassagier();
                     break;
                 case 5:
-                    toonPersoon(lijstPassagier);
+                    ticketWegschrijvenInBestand();
                     break;
 
                 case 8:
@@ -256,9 +265,9 @@ public class EuromoonApp {
 
         System.out.print("Kies een reis. \n(Gebruik de nummers om een reis te kiezen)\n--> ");
         int keuzeReis = Integer.parseInt(sc.nextLine());
-        Reis reisKoppelenAanReis = lijstReis.get(keuzeReis);
+        Reis reisKoppelenAanTicket = lijstReis.get(keuzeReis);
 
-        if ((reisKoppelenAanReis.getTicketTeller() + 1) > (reisKoppelenAanReis.getTrein().getAantalZitplaatsen())) {
+        if ((reisKoppelenAanTicket.getTicketTeller() + 1) > (reisKoppelenAanTicket.getTrein().getAantalZitplaatsen())) {
             System.err.println("Deze reis zit al vol, sorry.");
         } else {
 
@@ -281,7 +290,7 @@ public class EuromoonApp {
             };
 
             System.out.println("In welke wagon wilt deze persoon zitten?\nHier zijn alle mogelijke wagons:\n");
-            ArrayList<Wagon> lijstWagon = reisKoppelenAanReis.getTrein().getLijstWagons();
+            ArrayList<Wagon> lijstWagon = reisKoppelenAanTicket.getTrein().getLijstWagons();
 
             for (Wagon w : lijstWagon) {
                 System.out.println(GROEN +"Wagon"+ lijstWagon.indexOf(w) + ":" + RESET + "\n");
@@ -299,6 +308,18 @@ public class EuromoonApp {
                     System.err.println("Deze wagon zit al vol. Kies een andere wagon.\n");
                 }else{
                     passagierAanWagonToevoegen.voegPassagierToeAanWagon(ticketAanPassagierVerkopen);
+
+                    Ticket ticket = new Ticket(ticketAanPassagierVerkopen, reisKoppelenAanTicket, klasse);
+                    int grootteLijstTicketVoorAanpassing = lijstTicket.size();
+                    lijstTicket.add(ticket);
+                    lijstPassagierMetTicket.add(ticketAanPassagierVerkopen);
+
+
+                    if (grootteLijstTicketVoorAanpassing != lijstTicket.size()) {
+                        System.out.println(GROEN + "Ticket werd succesvol verkoopt aan " + ticketAanPassagierVerkopen.getVoornaam() + " " + ticketAanPassagierVerkopen.getAchternaam() + RESET);
+                        reisKoppelenAanTicket.ticketGemaakt();
+                    }
+
                     fouteKeuzeWagon = false;
                 }
             }while (fouteKeuzeWagon);
@@ -307,15 +328,7 @@ public class EuromoonApp {
 
 
 
-            Ticket ticket = new Ticket(ticketAanPassagierVerkopen, reisKoppelenAanReis, klasse);
-            int grootteLijstTicketVoorAanpassing = lijstTicket.size();
-            lijstTicket.add(ticket);
 
-
-            if (grootteLijstTicketVoorAanpassing != lijstTicket.size()) {
-                System.out.println(GROEN + "Ticket werd succesvol verkoopt aan " + ticketAanPassagierVerkopen.getVoornaam() + " " + ticketAanPassagierVerkopen.getAchternaam() + RESET);
-                reisKoppelenAanReis.ticketGemaakt();
-            }
 
         }
     }
@@ -336,7 +349,7 @@ public class EuromoonApp {
            toonPassagier(lijstPassagier);
     }
 
-    private void toonReis(ArrayList<Reis> lijstReis, boolean moetTreinBevatten, boolean moetWagonBevatten){
+    public static void toonReis(ArrayList<Reis> lijstReis, boolean moetTreinBevatten, boolean moetWagonBevatten){
         for (Reis r : lijstReis) {
 
 
@@ -443,7 +456,7 @@ public class EuromoonApp {
             System.out.print("Certificatie van de personeelslid: ");
             certificaties = sc.nextLine();
 
-            if (!Objects.equals(certificaties, "STOP")) {
+            if (!certificaties.equalsIgnoreCase("STOP")) {
 
                 assert p != null;
                 p.voegCertificatie(certificaties);
@@ -453,4 +466,69 @@ public class EuromoonApp {
     }
 
 
-}
+    private void ticketWegschrijvenInBestand(){
+
+        System.out.println("Hier zijn de mogelijke reizen waarvan je een ticket kan printen: ");
+        toonReis(lijstReis, true, true);
+        System.out.print("Kies een reis: ");
+        int keuzeReis = Integer.parseInt(sc.nextLine());
+        Reis gekozeReis = lijstReis.get(keuzeReis);
+        String bestandsNaam = gekozeReis.getTraject().getStartPunt() + "_" + gekozeReis.getTraject().getEindPunt() +"_"+gekozeReis.getTijdstip().getProperAankomstPuntA() + ".txt";
+
+
+
+        try (FileWriter writer = new FileWriter("ticket/" + bestandsNaam)) {
+
+            int i = 0;
+            for (Passagier p : lijstPassagierMetTicket) {
+
+               writer.append(p.toonPassagierVoorTicket(i));
+               i++;
+            }
+
+
+        } catch (IOException e) {
+            System.out.println("Schrijven mislukt");
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    }
+
+
+
+    }
+
+

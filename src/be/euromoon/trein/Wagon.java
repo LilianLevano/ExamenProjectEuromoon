@@ -2,12 +2,13 @@ package be.euromoon.trein;
 
 import be.euromoon.persoon.Passagier;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import static be.euromoon.EuromoonApp.GEEL;
 import static be.euromoon.EuromoonApp.RESET;
 
-public class Wagon {
+public class Wagon implements Serializable {
 
     private static int wagonTeller;
     private ArrayList<Passagier> lijstPassagier = new ArrayList<>();

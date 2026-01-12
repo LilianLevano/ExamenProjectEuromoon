@@ -1,6 +1,8 @@
 package be.euromoon.reizen;
 
-public class Traject {
+import java.io.Serializable;
+
+public class Traject implements Serializable {
 
     private String startPunt, eindPunt;
 

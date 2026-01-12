@@ -1,12 +1,13 @@
 package be.euromoon.persoon;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
 import static be.euromoon.EuromoonApp.GEEL;
 import static be.euromoon.EuromoonApp.RESET;
 
-public class Passagier extends Persoon{
+public class Passagier extends Persoon implements Serializable {
 
 
 
@@ -26,6 +27,16 @@ public class Passagier extends Persoon{
                             "\nGeboortedatum van de passagier: " + p.getGeboortedatum() +
                             "\n");
         }
+    }
+
+    public String toonPassagierVoorTicket(int i){
+
+        return "\nPassagier" + i + ":" +
+                "\nVoornaam passagier: " + getVoornaam() +
+                "\nAchternaam passagier: " + getAchternaam() +
+                "\nRijksregisternummer van de passagier: " + getRijksregisternummer() +
+                "\nGeboortedatum van de passagier: " + getGeboortedatum() +
+                "\n";
     }
 
 

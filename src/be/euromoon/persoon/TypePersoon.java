@@ -1,5 +1,7 @@
 package be.euromoon.persoon;
 
-public enum TypePersoon {
+import java.io.Serializable;
+
+public enum TypePersoon  implements Serializable {
     PASSAGIER, STEWARD, BESTUURDER, BAGAGEPERSONEEL
 }

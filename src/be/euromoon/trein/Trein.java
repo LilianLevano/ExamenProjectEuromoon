@@ -9,24 +9,17 @@ public class Trein {
     private TypeLocomotief typeLocomotief;
     private int aantalZitplaatsen;
     private static int treinTeller = 0;
-    private ArrayList<Wagon> lijstWagons;
+    private final ArrayList<Wagon> lijstWagons;
 
     public Trein(TypeLocomotief typeLocomotief) {
         this.typeLocomotief = typeLocomotief;
 
-        if (typeLocomotief == TypeLocomotief.CLASS_373){
-            aantalZitplaatsen = 80*typeLocomotief.getMaxAantalWagon();
-            this.lijstWagons = new ArrayList<>(12);
 
-            for(int i = 0; i < 12; i++){
-                lijstWagons.add(new Wagon());
-            }
-        }else if(typeLocomotief == TypeLocomotief.CLASS_374){
-            aantalZitplaatsen = 80*typeLocomotief.getMaxAantalWagon();
-            this.lijstWagons = new ArrayList<>(14);
-            for(int i = 0; i < 14; i++){
-                lijstWagons.add(new Wagon());
-            }
+        aantalZitplaatsen = typeLocomotief.getMaxAantalWagon() * 80;
+        this.lijstWagons = new ArrayList<>(typeLocomotief.getMaxAantalWagon());
+
+        for(int i = 0; i < typeLocomotief.getMaxAantalWagon(); i++) {
+            lijstWagons.add(new Wagon());
         }
         treinTeller++;
 
@@ -44,12 +37,8 @@ public class Trein {
 
     public void setTypeLocomotief(TypeLocomotief typeLocomotief) {
         this.typeLocomotief = typeLocomotief;
+        aantalZitplaatsen = typeLocomotief.getMaxAantalWagon() * 80;
 
-        if (typeLocomotief == TypeLocomotief.CLASS_373){
-            aantalZitplaatsen = 80*typeLocomotief.getMaxAantalWagon();
-        }else if(typeLocomotief == TypeLocomotief.CLASS_374){
-            aantalZitplaatsen = 80*typeLocomotief.getMaxAantalWagon();
-        }
     }
 
     public int getAantalZitplaatsen() {
