@@ -1,5 +1,6 @@
 package be.euromoon.reizen;
 
+import be.euromoon.persoon.Passagier;
 import be.euromoon.persoon.Personeelslid;
 import be.euromoon.trein.Trein;
 
@@ -15,6 +16,7 @@ public class Reis implements Serializable {
     private final ArrayList<Personeelslid> lijstPersoneelsleden = new ArrayList<>();
     private final ArrayList<Personeelslid> lijstBestuurder = new ArrayList<>();
     private final ArrayList<Personeelslid> lijstSteward = new ArrayList<>();
+    private final ArrayList<Passagier> lijstPassagierMetTicket = new ArrayList<>();
 
     private int ticketTeller = 0;
 
@@ -26,7 +28,13 @@ public class Reis implements Serializable {
     }
 
 
+    public void voegPersoonMetTicketToe(Passagier p){
+        lijstPassagierMetTicket.add(p);
+    }
 
+    public ArrayList<Passagier> getLijstPassagierMetTicket() {
+        return lijstPassagierMetTicket;
+    }
 
     public ArrayList<Personeelslid> getLijstSteward() {
         return lijstSteward;

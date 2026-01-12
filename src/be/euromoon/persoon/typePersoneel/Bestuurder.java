@@ -20,7 +20,7 @@ public class Bestuurder extends Personeelslid implements Serializable {
             System.out.println(
                     GEEL + "\t\tBestuurder" + bestuurder.indexOf(b) + ":" + RESET +
                             "\n\t\t\tVoornaam bestuurder: " + b.getVoornaam() +
-                            "\n\t\t\tAchternaam bestuurder: " + b.getAchternaam() +
+                            "\tAchternaam bestuurder: " + b.getAchternaam() +
                             "\n\t\t\tRijksregisternummer van de bestuurder: " + b.getRijksregisternummer() +
                             "\n\t\t\tGeboortedatum van de bestuurder: " + b.getGeboortedatum() +
                             "\n\t\t\tCertificaties: " + b.getLijstCertificaties());

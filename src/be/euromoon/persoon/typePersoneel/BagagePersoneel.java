@@ -25,7 +25,7 @@ public class BagagePersoneel extends Personeelslid implements Serializable {
                 System.out.println(
                         GEEL + "\t\tBagage personeel" + bagagePersoneel.indexOf(pl) + ":" + RESET +
                                 "\n\t\t\tVoornaam bagage personeel: " + pl.getVoornaam() +
-                                "\n\t\t\tAchternaam bagage personeel: " + pl.getAchternaam() +
+                                "\tAchternaam bagage personeel: " + pl.getAchternaam() +
                                 "\n\t\t\tRijksregisternummer van de bagage personeel: " + pl.getRijksregisternummer() +
                                 "\n\t\t\tGeboortedatum van de bagage personeel: " + pl.getGeboortedatum() +
                                 "\n\t\t\tCertificaties: " + pl.getLijstCertificaties()

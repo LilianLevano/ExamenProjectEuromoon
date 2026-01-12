@@ -1,5 +1,7 @@
 package be.euromoon.persoon;
 
+import be.euromoon.tickets.Klasse;
+
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -10,10 +12,19 @@ import static be.euromoon.EuromoonApp.RESET;
 public class Passagier extends Persoon implements Serializable {
 
 
+    private Klasse klasse;
 
     public Passagier(String voornaam, String achternaam, String rijksregisternummer, LocalDate geboortedatum) {
         super(voornaam, achternaam, rijksregisternummer, geboortedatum);
 
+    }
+
+    public void setKlasse(Klasse klasse) {
+        this.klasse = klasse;
+    }
+
+    public String getKlasse() {
+        return klasse.name().toLowerCase();
     }
 
     public static void toonPassagier(ArrayList<Passagier> passagier){
@@ -36,6 +47,7 @@ public class Passagier extends Persoon implements Serializable {
                 "\nAchternaam passagier: " + getAchternaam() +
                 "\nRijksregisternummer van de passagier: " + getRijksregisternummer() +
                 "\nGeboortedatum van de passagier: " + getGeboortedatum() +
+                "\nKlasse van de passagier: " + getKlasse() +
                 "\n";
     }
 

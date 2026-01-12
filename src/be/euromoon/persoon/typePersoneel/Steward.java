@@ -20,7 +20,7 @@ public class Steward extends Personeelslid implements Serializable {
             System.out.println(
                     GEEL + "\t\tSteward" + lijstSteward.indexOf(s) + ":" + RESET +
                             "\n\t\t\tVoornaam steward: " + s.getVoornaam() +
-                            "\n\t\t\tAchternaam steward: " + s.getAchternaam() +
+                            "\tAchternaam steward: " + s.getAchternaam() +
                             "\n\t\t\tRijksregisternummer van de steward: " + s.getRijksregisternummer() +
                             "\n\t\t\tGeboortedatum van de steward: " + s.getGeboortedatum() +
                             "\n\t\t\tCertificaties: " + s.getLijstCertificaties())
