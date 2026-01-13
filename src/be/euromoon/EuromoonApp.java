@@ -127,6 +127,8 @@ public class EuromoonApp {
 
         } catch (DateTimeParseException e) {
             System.err.println("Foutieve invoer: Je hebt een foute formaat ingegeven bij het geboortedatum. Passagier werd niet aangemaakt, probeer opnieuw.");
+        } catch (Exception e) {
+            System.err.println(e.getMessage());;
         }
 
         eindOptie();
@@ -149,14 +151,21 @@ public class EuromoonApp {
             String eindpunt = sc.nextLine();
             Traject t = new Traject(startpunt, eindpunt);
 
-            /*Maak een Tijdstip, onderdeel om een object Reis te bouwen  */
-            System.out.print("Startuur van het traject (Formaat: yyyy-MM-ddThh:mm:ss): ");
-            LocalDateTime start = LocalDateTime.parse(sc.nextLine());
-            System.out.print("Einduur van het traject (Formaat: yyyy-MM-ddThh:mm:ss): ");
-            LocalDateTime eind = LocalDateTime.parse(sc.nextLine());
-            Tijdstip ti = new Tijdstip(start, eind);
+            Tijdstip ti;
+            try{
+                /*Maak een Tijdstip, onderdeel om een object Reis te bouwen  */
+                System.out.print("Startuur van het traject (Formaat: yyyy-MM-ddThh:mm:ss): ");
+                LocalDateTime start = LocalDateTime.parse(sc.nextLine());
+                System.out.print("Einduur van het traject (Formaat: yyyy-MM-ddThh:mm:ss): ");
+                LocalDateTime eind = LocalDateTime.parse(sc.nextLine());
+                ti = new Tijdstip(start, eind);
+            }catch(DateTimeParseException e){
+                throw new Exception("Je hebt bij een van de tijdstip geen goeie formaat ingegeven. Probeer opnieuw.");
+            }
+
 
             Reis r = new Reis(t, ti);
+
 
             /*Maak een Bestuurder, er moet er minstens 1 zijn per reis  */
             System.out.println("\n" + GEEL + "Een reis heeft minstens 1 bestuurder nodig." + RESET + "\n");
@@ -217,8 +226,8 @@ public class EuromoonApp {
                 System.err.println("Reis werd niet aangemaakt.");
             }
 
-        } catch (DateTimeParseException e) {
-            System.err.println("Foutieve invoer: Je hebt een foute formaat ingegeven bij een van de tijdstip. Reis werd niet aangemaakt, probeer opnieuw.");
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
         }
 
         eindOptie();
@@ -231,61 +240,73 @@ public class EuromoonApp {
      */
     private void treinAanReisKoppelen() {
 
-        System.out.println(GROEN + "\n" + zetStreepjes(15) + "Koppel een trein aan een reis" + zetStreepjes(15) + RESET);
 
-        try {
-            System.out.print("\nWelke type trein wil je aan een reis koppelen? Je hebt de keuze tussen: \n1. CLASS_373 (Kan tot 12 wagons trekken) \n2. CLASS_374 (Kan tot 14 wagons trekken). \n(Gebruik de index van de keuze om deze te selecteren)\n--> ");
-
-            ArrayList<TypeLocomotief> lijstLocomotieven = new ArrayList<>(List.of(TypeLocomotief.values()));
-            TypeLocomotief typeLocomotief;
-            do{
+        if (!lijstReis.isEmpty()) {
 
 
-                int keuzeTypeTrein = Integer.parseInt(sc.nextLine());
+            System.out.println(GROEN + "\n" + zetStreepjes(15) + "Koppel een trein aan een reis" + zetStreepjes(15) + RESET);
+
+            try {
+                System.out.print("\nWelke type trein wil je aan een reis koppelen? Je hebt de keuze tussen: \n1. CLASS_373 (Kan tot 12 wagons trekken) \n2. CLASS_374 (Kan tot 14 wagons trekken). \n(Gebruik de index van de keuze om deze te selecteren)\n--> ");
+
+                ArrayList<TypeLocomotief> lijstLocomotieven = new ArrayList<>(List.of(TypeLocomotief.values()));
+                TypeLocomotief typeLocomotief;
+                do {
+
+                    int keuzeTypeTrein;
+                    do{
+                        keuzeTypeTrein = Integer.parseInt(sc.nextLine());
+
+                        if (keuzeTypeTrein < 0 || keuzeTypeTrein > lijstLocomotieven.size()) {
+                            System.err.println("Je hebt geen geldige type locomotief gekozen. Probeer nu opnieuw:");
+
+                        }
+                    }while(keuzeTypeTrein < 0 || keuzeTypeTrein > lijstLocomotieven.size());
 
 
-                typeLocomotief = lijstLocomotieven.get(keuzeTypeTrein);
+                    typeLocomotief = lijstLocomotieven.get(keuzeTypeTrein);
 
 
+                    if (typeLocomotief == null) {
+                        System.err.print("Je hebt geen geldige type locomotief gekozen. Probeer nu opnieuw:");
+                    }
 
-                if (typeLocomotief == null) {
-                    System.err.print("Je hebt geen geldige type locomotief gekozen. Probeer nu opnieuw:");
+                } while (typeLocomotief == null);
+
+
+                Trein trein = new Trein(typeLocomotief);
+
+                System.out.println("\nHier zijn alle mogelijke reizen waaraan je deze trein kan koppelen: ");
+
+
+                toonReis(lijstReis, false, true);
+
+
+                System.out.print("Aan welke reis wil je deze trein koppelen? \n(Gebruik de index van de reis.)\n--> ");
+
+                int keuzeReis = Integer.parseInt(sc.nextLine());
+
+                if (keuzeReis < 0 || keuzeReis >= lijstReis.size()) {
+                    throw new Exception("Je hebt geen geldige reis gekozen. Deze actie werd volledig gesloten. Probeer opnieuw.");
                 }
 
-            }while(typeLocomotief == null);
+                Reis reisKoppelenAanTrein = lijstReis.get(keuzeReis);
 
 
-            Trein trein = new Trein(typeLocomotief);
+                reisKoppelenAanTrein.koppelTreinAanReis(trein);
+                lijstReisMetTrein.add(reisKoppelenAanTrein);
 
-            System.out.println("\nHier zijn alle mogelijke reizen waaraan je deze trein kan koppelen: ");
+                System.out.println(GROEN + "Trein werd succesvol gekoppeld aan deze reis." + RESET);
 
-
-            toonReis(lijstReis, false, true);
-
-
-            System.out.print("Aan welke reis wil je deze trein koppelen? \n(Gebruik de index van de reis.)\n--> ");
-
-            int keuzeReis = Integer.parseInt(sc.nextLine());
-
-            if (keuzeReis < 0 || keuzeReis >= lijstReis.size()) {
-                throw new Exception("Je hebt geen geldige reis gekozen. Deze actie werd volledig gesloten. Probeer opnieuw.");
+            } catch (Exception e) {
+                System.err.println(e.getMessage());
             }
 
-             Reis reisKoppelenAanTrein = lijstReis.get(keuzeReis);
-
-
-            reisKoppelenAanTrein.koppelTreinAanReis(trein);
-            lijstReisMetTrein.add(reisKoppelenAanTrein);
-
-            System.out.println(GROEN + "Trein werd succesvol gekoppeld aan deze reis." + RESET);
-
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
+            eindOptie();
+        }else{
+            System.err.println("Er zijn momenteel geen reizen beschikbaar. Maak er eerst een.");
         }
-
-        eindOptie();
     }
-
 
     /**
      * Optie om een ticket te verkopen aan een passagier.
@@ -294,117 +315,132 @@ public class EuromoonApp {
      */
     private void verkoopTicketAanPassagier() {
 
-
-        System.out.println(GROEN + "\n" + zetStreepjes(15)+ "Verkoop een ticket aan een passagier" + zetStreepjes(15)+ "\n" + RESET);
-        System.out.println(GEEL + "Aan een ticket moet je een reis koppelen, hier zijn de mogelijke reizen: " + RESET);
-
-        toonReis(lijstReisMetTrein, true, false);
-
-        System.out.print(GEEL + zetStreepjes(4) +  "Kies een reis." + zetStreepjes(4) + RESET +  "\n(Gebruik de nummer van de reis om deze te selecteren)\n--> ");
-
-       try {
+    if (!lijstReis.isEmpty()) {
+        if(!lijstPassagier.isEmpty()) {
 
 
-           int keuzeReis = Integer.parseInt(sc.nextLine());
+            System.out.println(GROEN + "\n" + zetStreepjes(15) + "Verkoop een ticket aan een passagier" + zetStreepjes(15) + "\n" + RESET);
+            System.out.println(GEEL + "Aan een ticket moet je een reis koppelen, hier zijn de mogelijke reizen: " + RESET);
 
-           if (keuzeReis < 0 || keuzeReis >= lijstReisMetTrein.size()) {
-               throw new Exception("Je hebt geen geldige reis gekozen. Deze actie werd volledig gesloten. Probeer opnieuw.");
-           }
+            toonReis(lijstReisMetTrein, true, false);
 
-           Reis reisKoppelenAanTicket = lijstReisMetTrein.get(keuzeReis);
+            System.out.print(GEEL + zetStreepjes(4) + "Kies een reis." + zetStreepjes(4) + RESET + "\n(Gebruik de nummer van de reis om deze te selecteren)\n--> ");
 
-           if ((reisKoppelenAanTicket.getTicketTeller() + 1) > (reisKoppelenAanTicket.getTrein().getAantalZitplaatsen())) {
-               System.err.println("Deze reis zit al vol, sorry.");
-           } else {
-
-               System.out.println(GEEL  + "\nMogelijke passagiers aan wie je een ticket kan verkopen: " + RESET);
-
-               toonPersoon();
-
-               System.out.print(GROEN + zetStreepjes(4) +  "Kies een passagier." + zetStreepjes(4) + RESET +  "\nGebruik de nummer van de gewenste passagier om deze te selecteren: " );
-               int keuzePassagier = Integer.parseInt(sc.nextLine());
-
-               if (keuzePassagier < 0 || keuzePassagier >= lijstPassagier.size()) {
-                   throw new Exception("Je hebt geen geldige passagier gekozen. Deze actie werd volledig gesloten. Probeer opnieuw.");
-               }
-
-               Passagier ticketAanPassagierVerkopen = lijstPassagier.get(keuzePassagier);
-
-               System.out.println("In welke klasse wilt " + ticketAanPassagierVerkopen.getVoornaam() + " " + ticketAanPassagierVerkopen.getAchternaam() + " zitten ? Er is keuze tussen:\n");
-
-               ArrayList<Klasse> lijstKlasse = new ArrayList<>(List.of(Klasse.values()));
-
-               for (Klasse klasse : lijstKlasse) {
-                   System.out.println(lijstKlasse.indexOf(klasse) + "." + klasse.name() + "\n");
-               }
-
-               System.out.print("Gebruik de nummers om een klasse te selecteren)\n-->");
-
-               Klasse klasse;
-               do{
-                   int keuzeKlasse = Integer.parseInt(sc.nextLine());
-
-                   klasse = lijstKlasse.get(keuzeKlasse);
-
-                   if (klasse == null) {
-                       System.err.print("Je hebt geen geldige klasse gekozen, probeer nu opnieuw: ");
-                   }else{
-                       ticketAanPassagierVerkopen.setKlasse(klasse);
-                   }
-
-               }while(klasse == null);
+            try {
 
 
-               System.out.println("In welke wagon wilt deze persoon zitten?\nHier zijn alle mogelijke wagons:\n");
-               ArrayList<Wagon> lijstWagon = reisKoppelenAanTicket.getTrein().getLijstWagons();
+                int keuzeReis = Integer.parseInt(sc.nextLine());
 
-               for (Wagon w : lijstWagon) {
-                   System.out.println(GROEN + "Wagon" + lijstWagon.indexOf(w) + ":" + RESET + "\n");
-                   w.toonPassagierInWagon();
-               }
+                if (keuzeReis < 0 || keuzeReis >= lijstReisMetTrein.size()) {
+                    throw new Exception("Je hebt geen geldige reis gekozen. Deze actie werd volledig gesloten. Probeer opnieuw.");
+                }
 
-               boolean fouteKeuzeWagon = true;
+                Reis reisKoppelenAanTicket = lijstReisMetTrein.get(keuzeReis);
 
-               do {
-                   System.out.print("\nGebruik de nummer van het wagon die je wilt selecteren\n-->");
-                   int keuzeWagon = Integer.parseInt(sc.nextLine());
+                if ((reisKoppelenAanTicket.getTicketTeller() + 1) > (reisKoppelenAanTicket.getTrein().getAantalZitplaatsen())) {
+                    System.err.println("Deze reis zit al vol, sorry.");
+                } else {
 
-                   if (keuzeWagon < 0 ||  keuzeWagon >= lijstWagon.size()) {
-                       throw new Exception("Je hebt geen geldige wagon gekozen. Actie gesloten. Probeer opnieuw.");
-                   }
+                    System.out.println(GEEL + "\nMogelijke passagiers aan wie je een ticket kan verkopen: " + RESET);
 
-                   Wagon passagierAanWagonToevoegen = lijstWagon.get(keuzeWagon);
+                    toonPersoon();
 
-                   if ((passagierAanWagonToevoegen.getLijstPassagier().size() + 1) > 80) {
-                       System.err.println("Deze wagon zit al vol. Kies een andere wagon.\n");
-                   } else {
-                       passagierAanWagonToevoegen.voegPassagierToeAanWagon(ticketAanPassagierVerkopen);
+                    System.out.print(GROEN + zetStreepjes(4) + "Kies een passagier." + zetStreepjes(4) + RESET + "\nGebruik de nummer van de gewenste passagier om deze te selecteren: ");
+                    int keuzePassagier = Integer.parseInt(sc.nextLine());
 
-                       Ticket ticket = new Ticket(ticketAanPassagierVerkopen, reisKoppelenAanTicket, klasse);
-                       int grootteLijstTicketVoorAanpassing = lijstTicket.size();
-                       lijstTicket.add(ticket);
+                    if (keuzePassagier < 0 || keuzePassagier >= lijstPassagier.size()) {
+                        throw new Exception("Je hebt geen geldige passagier gekozen. Deze actie werd volledig gesloten. Probeer opnieuw.");
+                    }
+
+                    Passagier ticketAanPassagierVerkopen = lijstPassagier.get(keuzePassagier);
+
+                    System.out.println("In welke klasse wilt " + ticketAanPassagierVerkopen.getVoornaam() + " " + ticketAanPassagierVerkopen.getAchternaam() + " zitten ? Er is keuze tussen:\n");
+
+                    ArrayList<Klasse> lijstKlasse = new ArrayList<>(List.of(Klasse.values()));
+
+                    for (Klasse klasse : lijstKlasse) {
+                        System.out.println(lijstKlasse.indexOf(klasse) + "." + klasse.name() + "\n");
+                    }
+
+                    System.out.print("Gebruik de nummers om een klasse te selecteren)\n-->");
+
+                    Klasse klasse;
+                    do {
+
+                        int keuzeKlasse;
+                        do {
+                            keuzeKlasse = Integer.parseInt(sc.nextLine());
+                            if (keuzeKlasse < 0 || keuzeKlasse >= lijstKlasse.size()){
+                                System.err.println("Je hebt geen geldige klasse gekozen. Probeer nu opnieuw: ");
+                            }
+                        }while(keuzeKlasse < 0 || keuzeKlasse >= lijstKlasse.size());
+                        klasse = lijstKlasse.get(keuzeKlasse);
+
+                        if (klasse == null) {
+                            System.err.print("Je hebt geen geldige klasse gekozen, probeer nu opnieuw: ");
+                        } else {
+                            ticketAanPassagierVerkopen.setKlasse(klasse);
+                        }
+
+                    } while (klasse == null);
 
 
-                       if (grootteLijstTicketVoorAanpassing != lijstTicket.size()) {
-                           System.out.println(GROEN + "Ticket werd succesvol verkoopt aan " + ticketAanPassagierVerkopen.getVoornaam() + " " + ticketAanPassagierVerkopen.getAchternaam() + RESET);
-                           reisKoppelenAanTicket.ticketGemaakt();
-                           lijstPassagierMetTicket.add(ticketAanPassagierVerkopen);
-                           reisKoppelenAanTicket.voegPersoonMetTicketToe(ticketAanPassagierVerkopen);
-                           fouteKeuzeWagon = false;
-                       }else{
-                           System.err.println("Ticket werd niet verkoopt.");
-                       }
+                    System.out.println("In welke wagon wilt deze persoon zitten?\nHier zijn alle mogelijke wagons:\n");
+                    ArrayList<Wagon> lijstWagon = reisKoppelenAanTicket.getTrein().getLijstWagons();
+
+                    for (Wagon w : lijstWagon) {
+                        System.out.println(GROEN + "Wagon" + lijstWagon.indexOf(w) + ":" + RESET + "\n");
+                        w.toonPassagierInWagon();
+                    }
+
+                    boolean fouteKeuzeWagon = true;
+
+                    do {
+                        System.out.print("\nGebruik de nummer van het wagon die je wilt selecteren\n-->");
+                        int keuzeWagon = Integer.parseInt(sc.nextLine());
+
+                        if (keuzeWagon < 0 || keuzeWagon >= lijstWagon.size()) {
+                            throw new Exception("Je hebt geen geldige wagon gekozen. Actie gesloten. Probeer opnieuw.");
+                        }
+
+                        Wagon passagierAanWagonToevoegen = lijstWagon.get(keuzeWagon);
+
+                        if ((passagierAanWagonToevoegen.getLijstPassagier().size() + 1) > 80) {
+                            System.err.println("Deze wagon zit al vol. Kies een andere wagon.\n");
+                        } else {
+                            passagierAanWagonToevoegen.voegPassagierToeAanWagon(ticketAanPassagierVerkopen);
+
+                            Ticket ticket = new Ticket(ticketAanPassagierVerkopen, reisKoppelenAanTicket, klasse);
+                            int grootteLijstTicketVoorAanpassing = lijstTicket.size();
+                            lijstTicket.add(ticket);
 
 
-                   }
-               } while (fouteKeuzeWagon);
+                            if (grootteLijstTicketVoorAanpassing != lijstTicket.size()) {
+                                System.out.println(GROEN + "Ticket werd succesvol verkoopt aan " + ticketAanPassagierVerkopen.getVoornaam() + " " + ticketAanPassagierVerkopen.getAchternaam() + RESET);
+                                reisKoppelenAanTicket.ticketGemaakt();
+                                lijstPassagierMetTicket.add(ticketAanPassagierVerkopen);
+                                reisKoppelenAanTicket.voegPersoonMetTicketToe(ticketAanPassagierVerkopen);
+                                fouteKeuzeWagon = false;
+                            } else {
+                                System.err.println("Ticket werd niet verkoopt.");
+                            }
 
-           }
-       }catch (Exception e) {
-           System.err.println(e.getMessage());
-       }
 
-       eindOptie();
+                        }
+                    } while (fouteKeuzeWagon);
+
+                }
+            } catch (Exception e) {
+                System.err.println(e.getMessage());
+            }
+
+            eindOptie();
+        }else{
+            System.err.println("Er zijn momenteel geen beschikbare personen. Maak er eerst een aan.");
+        }
+    }else{
+        System.err.println("Er zijn momenteel geen reizen beschikbaar. Maak er eerst een aan.");
+    }
     }
 
 
@@ -414,43 +450,52 @@ public class EuromoonApp {
      */
     private void ticketWegschrijvenInBestand(){
 
-        System.out.println(GROEN + "\n" + zetStreepjes(15) +  "Ticket wegschrijven in bestand" + zetStreepjes(15) + "\n" +RESET);
 
-        System.out.println(GEEL + zetStreepjes(4) +  "Hier zijn de mogelijke reizen waarvan je een ticket kan printen: " + zetStreepjes(4) + "\n" + RESET);
-        toonReis(lijstReis, true, true);
-        System.out.print("Kies een reis. \nGebruik de nummer van de reis die je wilt selecteren: ");
-
-        try{
-            int keuzeReis = Integer.parseInt(sc.nextLine());
-
-            if (keuzeReis < 0 ||  keuzeReis >= lijstReis.size() ) {
-                throw new Exception("Je hebt geen geldige reis gekozen. Actie volledig gesloten. Probeer opnieuw.");
-            }
-
-            Reis gekozeReis = lijstReis.get(keuzeReis);
-            String bestandsNaam = gekozeReis.getTraject().getStartPunt() + "_" + gekozeReis.getTraject().getEindPunt() +"_"+gekozeReis.getTijdstip().getProperAankomstPuntA() + ".txt";
-            ArrayList<Passagier> lijstPassagierMetTicketOpDezeReis = gekozeReis.getLijstPassagierMetTicket();
+        if (!lijstReis.isEmpty()) {
 
 
-            try (FileWriter writer = new FileWriter("ticket/" + bestandsNaam)) {
+            System.out.println(GROEN + "\n" + zetStreepjes(15) + "Ticket wegschrijven in bestand" + zetStreepjes(15) + "\n" + RESET);
 
-                int i = 0;
-                for (Passagier p : lijstPassagierMetTicketOpDezeReis) {
+            System.out.println(GEEL + zetStreepjes(4) + "Hier zijn de mogelijke reizen waarvan je een ticket kan printen: " + zetStreepjes(4) + "\n" + RESET);
+            toonReis(lijstReis, true, true);
+            System.out.print("Kies een reis. \nGebruik de nummer van de reis die je wilt selecteren: ");
 
-                    writer.append(p.toonPassagierVoorTicket(i));
-                    i++;
+            try {
+                int keuzeReis = Integer.parseInt(sc.nextLine());
+
+                if (keuzeReis < 0 || keuzeReis >= lijstReis.size()) {
+                    throw new Exception("Je hebt geen geldige reis gekozen. Actie volledig gesloten. Probeer opnieuw.");
                 }
 
+                Reis gekozeReis = lijstReis.get(keuzeReis);
+                String bestandsNaam = gekozeReis.getTraject().getStartPunt() + "_" + gekozeReis.getTraject().getEindPunt() + "_" + gekozeReis.getTijdstip().getProperAankomstPuntA() + ".txt";
+                ArrayList<Passagier> lijstPassagierMetTicketOpDezeReis = gekozeReis.getLijstPassagierMetTicket();
 
-            } catch (IOException e) {
-                System.out.println("Schrijven mislukt");
+
+                try (FileWriter writer = new FileWriter("ticket/" + bestandsNaam)) {
+
+                    int i = 0;
+                    for (Passagier p : lijstPassagierMetTicketOpDezeReis) {
+
+                        writer.append(p.toonPassagierVoorTicket(i));
+                        i++;
+                    }
+
+
+                } catch (IOException e) {
+                    System.out.println("Schrijven mislukt");
+                }
+
+            } catch (Exception e) {
+                System.err.println(e.getMessage());
             }
 
-        }catch (Exception e) {
-            System.err.println(e.getMessage());
-        }
+            System.out.println(GROEN + "Boardinglijst afgedrukt" + RESET);
+            eindOptie();
 
-        eindOptie();
+        }else{
+            System.err.println("Er zijn momenteel geen reizen beschikbaar. Maak er eerst een aan.");
+        }
 
     }
 
@@ -528,7 +573,7 @@ public class EuromoonApp {
      * @param typePersoon een waarde uit de enumeratie typePersoon
      * @return een verschillende constructor naargelang typePersoon
      */
-    private Persoon maakPersoon(TypePersoon typePersoon) {
+    private Persoon maakPersoon(TypePersoon typePersoon) throws Exception {
 
 
         System.out.print("Voornaam van de " + typePersoon.name().toLowerCase() + ": ");
@@ -537,9 +582,17 @@ public class EuromoonApp {
         String achternaam = sc.nextLine();
         System.out.print("Rijksregisternummer van de " + typePersoon.name().toLowerCase() + ": ");
         String rijksregisternummer = sc.nextLine();
-        System.out.print("Geboortedatum van de " + typePersoon.name().toLowerCase() + " (Formaat: yyyy-MM-dd): ");
-        LocalDate geboortedatum = LocalDate.parse(sc.nextLine());
 
+        LocalDate geboortedatum;
+
+        try {
+
+
+            System.out.print("Geboortedatum van de " + typePersoon.name().toLowerCase() + " (Formaat: yyyy-MM-dd): ");
+            geboortedatum = LocalDate.parse(sc.nextLine());
+        }catch (DateTimeParseException e){
+            throw new Exception("Je hebt een foute formaat ingegeven bij het geboortedatum.");
+        }
         switch (typePersoon) {
             case PASSAGIER -> {return new Passagier(voornaam, achternaam, rijksregisternummer, geboortedatum);}
             case BESTUURDER -> {return new Bestuurder(voornaam, achternaam, rijksregisternummer, geboortedatum);}
@@ -558,7 +611,7 @@ public class EuromoonApp {
      *
      * @return een object Bestuurder met een lijst van certificaties
      */
-    private Personeelslid maakBestuurder() {
+    private Personeelslid maakBestuurder() throws Exception {
 
         Personeelslid p = (Personeelslid) maakPersoon(TypePersoon.BESTUURDER);
         Bestuurder bestuurder = (Bestuurder) p;
@@ -575,7 +628,7 @@ public class EuromoonApp {
      *
      * @return een object Steward met een lijst van certificaties
      */
-    private Personeelslid maakSteward() {
+    private Personeelslid maakSteward() throws Exception {
 
         Personeelslid p = (Personeelslid) maakPersoon(TypePersoon.STEWARD);
         Steward steward = (Steward) p;
@@ -591,7 +644,7 @@ public class EuromoonApp {
      *
      * @return een object BagagePersoneel met een lijst van certificaties
      */
-    private Personeelslid maakBagagePersoneel() {
+    private Personeelslid maakBagagePersoneel() throws Exception {
 
         Personeelslid p = (Personeelslid) maakPersoon(TypePersoon.BAGAGEPERSONEEL);
         BagagePersoneel bagagePersoneel = (BagagePersoneel) p;
@@ -619,10 +672,13 @@ public class EuromoonApp {
 
             if (!certificaties.equalsIgnoreCase("STOP")) {
 
-                p.voegCertificatie(certificaties);
+                    p.voegCertificatie(certificaties);
+
+
+
             }
 
-        } while (!certificaties.equalsIgnoreCase("STOP"));
+        } while (!certificaties.equalsIgnoreCase("STOP") && !p.getLijstCertificaties().isEmpty());
     }
 
 
