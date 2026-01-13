@@ -10,18 +10,27 @@ import static be.euromoon.EuromoonApp.lijstPassagier;
 import static be.euromoon.EuromoonApp.toonReis;
 
 
+/**
+ * Deze klasse representeert een ticket. Een ticket bevat een reis, een klasse en een passagier. Wordt gebruikt om een boarding lijst af te drukken.
+ */
 public class Ticket implements Serializable {
 
     private Passagier passagier;
     private Reis reis;
     private Klasse klasse;
-    private static int ticketTeller = 0;
 
+
+    /**
+     * Maakt een object Ticket aan
+     * @param passagier een object Passagier
+     * @param reis een object Reis
+     * @param klasse een waarde uit de enumeratie Klasse
+     */
     public Ticket(Passagier passagier, Reis reis, Klasse klasse) {
         this.passagier = passagier;
         this.reis = reis;
         this.klasse = klasse;
-        ticketTeller++;
+
     }
 
     public Passagier getPassagier() {
@@ -30,12 +39,6 @@ public class Ticket implements Serializable {
     public void setPassagier(Passagier passagier) {
         this.passagier = passagier;
     }
-    public Reis getReis() {
-        return reis;
-    }
-    public void setReizen(Reis reis) {
-        this.reis = reis;
-    }
     public Klasse getKlasse() {
         return klasse;
     }
@@ -43,19 +46,6 @@ public class Ticket implements Serializable {
         this.klasse = klasse;
     }
 
-
-    public String ticketWegschrijven(){
-
-        return passagier.getAchternaam() + " " + passagier.getVoornaam();
-    }
-
-    public static void toonTicket(ArrayList<Ticket> tickets){
-
-        for(Ticket t:tickets){
-            Passagier.toonPassagier(lijstPassagier);
-
-        }
-    }
 
     @Override
     public String toString() {

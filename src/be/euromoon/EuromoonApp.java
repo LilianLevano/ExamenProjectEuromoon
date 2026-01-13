@@ -15,7 +15,7 @@ import be.euromoon.tickets.Ticket;
 import be.euromoon.trein.Trein;
 import be.euromoon.trein.TypeLocomotief;
 import be.euromoon.trein.Wagon;
-import org.w3c.dom.ls.LSOutput;
+
 
 
 import java.io.FileWriter;
@@ -26,6 +26,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 
+import java.util.List;
 import java.util.Scanner;
 
 import static be.euromoon.persoon.Passagier.toonPassagier;
@@ -46,8 +47,11 @@ public class EuromoonApp {
     private final ArrayList<Ticket> lijstTicket = new ArrayList<>();
     private final ArrayList<Reis> lijstReisMetTrein = new ArrayList<>();
     private final ArrayList<Passagier> lijstPassagierMetTicket = new ArrayList<>();
-    private final ArrayList<Reis> lijstReisMetTreinMetTicket = new ArrayList<>();
 
+
+    /**
+     * Start de applicatie met een keuzemenu die aparte functies oproept om de applicatie te gebruiken.
+     */
     public void start() {
         System.out.println(GEEL + zetStreepjes(15) + "Welkom op de Euromoon Manager App" + zetStreepjes(15)+ RESET );
 
@@ -100,6 +104,10 @@ public class EuromoonApp {
 
     // -----------------FUNCTIES VOOR KEUZE MENU ----------------- //
 
+
+    /**
+     * Optie om een passagier te registreren. Gebruikt de functie maakPersoon om een Persoon aan te maken die dan wordt gecast naar een object Passagier. Uiteindelijk komt het in de ArrayList lijstPassagier
+     */
     private void passagierRegistreren() {
         System.out.println(GROEN +"\n"+  zetStreepjes(10) +  "Registreer een passagier" +  zetStreepjes(10) + RESET + "\n");
         try {
@@ -124,6 +132,11 @@ public class EuromoonApp {
         eindOptie();
     }
 
+    /**
+     * Optie om een reis te maken.
+     * Een object Traject en Tijdstip worden aangemaakt om een reis te maken.
+     * Dan worden bestuurders, stewards en bagage personelen toegevoegd aan de hand van functies die een object Personeelslid maken, die dan wordt gecast naar de nodige type personeel.
+     */
     private void maakReis() {
 
         System.out.println(GROEN + "\n" + zetStreepjes(15) + "Maak een reis" + zetStreepjes(15) + RESET + "\n");
@@ -148,7 +161,7 @@ public class EuromoonApp {
             /*Maak een Bestuurder, er moet er minstens 1 zijn per reis  */
             System.out.println("\n" + GEEL + "Een reis heeft minstens 1 bestuurder nodig." + RESET + "\n");
 
-            Personeelslid verplichteBestuurder = maakBestuurder();
+            Personeelslid verplichteBestuurder =  maakBestuurder();
             r.voegBestuurderToe(verplichteBestuurder);
 
             String invoerBestuurder;
@@ -212,6 +225,10 @@ public class EuromoonApp {
 
     }
 
+    /**
+     * Optie om een trein aan een reis te koppelen.
+     * Eerst wordt een type locomotief gekozen om een trein aan te maken, trein die dan aan een reis kan toegevoegd worden.
+     */
     private void treinAanReisKoppelen() {
 
         System.out.println(GROEN + "\n" + zetStreepjes(15) + "Koppel een trein aan een reis" + zetStreepjes(15) + RESET);
@@ -219,6 +236,7 @@ public class EuromoonApp {
         try {
             System.out.print("\nWelke type trein wil je aan een reis koppelen? Je hebt de keuze tussen: \n1. CLASS_373 (Kan tot 12 wagons trekken) \n2. CLASS_374 (Kan tot 14 wagons trekken). \n(Gebruik de index van de keuze om deze te selecteren)\n--> ");
 
+            ArrayList<TypeLocomotief> lijstLocomotieven = new ArrayList<>(List.of(TypeLocomotief.values()));
             TypeLocomotief typeLocomotief;
             do{
 
@@ -226,13 +244,9 @@ public class EuromoonApp {
                 int keuzeTypeTrein = Integer.parseInt(sc.nextLine());
 
 
-                typeLocomotief =
+                typeLocomotief = lijstLocomotieven.get(keuzeTypeTrein);
 
-                        switch (keuzeTypeTrein) {
-                            case 1 -> TypeLocomotief.CLASS_373;
-                            case 2 -> TypeLocomotief.CLASS_374;
-                            default -> null;
-                        };
+
 
                 if (typeLocomotief == null) {
                     System.err.print("Je hebt geen geldige type locomotief gekozen. Probeer nu opnieuw:");
@@ -272,6 +286,12 @@ public class EuromoonApp {
         eindOptie();
     }
 
+
+    /**
+     * Optie om een ticket te verkopen aan een passagier.
+     * Eerst wordt er een reis gekozen, dan wordt er een al geregistreerde passagier gekozen, uiteindelijk wordt een waarde uit de enumeratie Klasse gekozen om een object Ticket aan te maken.
+     * Een klasse uit de enumeratie Klasse wordt ook gekozen om ze aan een passagier te koppelen.
+     */
     private void verkoopTicketAanPassagier() {
 
 
@@ -299,7 +319,7 @@ public class EuromoonApp {
 
                System.out.println(GEEL  + "\nMogelijke passagiers aan wie je een ticket kan verkopen: " + RESET);
 
-               toonPersoon(lijstPassagier);
+               toonPersoon();
 
                System.out.print(GROEN + zetStreepjes(4) +  "Kies een passagier." + zetStreepjes(4) + RESET +  "\nGebruik de nummer van de gewenste passagier om deze te selecteren: " );
                int keuzePassagier = Integer.parseInt(sc.nextLine());
@@ -310,17 +330,21 @@ public class EuromoonApp {
 
                Passagier ticketAanPassagierVerkopen = lijstPassagier.get(keuzePassagier);
 
-               System.out.println("In welke klasse wilt " + ticketAanPassagierVerkopen.getVoornaam() + " " + ticketAanPassagierVerkopen.getAchternaam() + " zitten ? Er is keuze tussen: \n1. Eerste klasse \n2. Tweede klasse \n(Gebruik de nummers om een klasse te selecteren)\n-->");
+               System.out.println("In welke klasse wilt " + ticketAanPassagierVerkopen.getVoornaam() + " " + ticketAanPassagierVerkopen.getAchternaam() + " zitten ? Er is keuze tussen:\n");
+
+               ArrayList<Klasse> lijstKlasse = new ArrayList<>(List.of(Klasse.values()));
+
+               for (Klasse klasse : lijstKlasse) {
+                   System.out.println(lijstKlasse.indexOf(klasse) + "." + klasse.name() + "\n");
+               }
+
+               System.out.print("Gebruik de nummers om een klasse te selecteren)\n-->");
 
                Klasse klasse;
                do{
                    int keuzeKlasse = Integer.parseInt(sc.nextLine());
 
-                   klasse = switch (keuzeKlasse) {
-                       case 1 -> Klasse.EERSTE_KLASSE;
-                       case 2 -> Klasse.TWEEDE_KLASSE;
-                       default -> null;
-                   };
+                   klasse = lijstKlasse.get(keuzeKlasse);
 
                    if (klasse == null) {
                        System.err.print("Je hebt geen geldige klasse gekozen, probeer nu opnieuw: ");
@@ -383,6 +407,11 @@ public class EuromoonApp {
        eindOptie();
     }
 
+
+    /**
+     * Optie om een boardinglijst van een reis af te drukken in een extern bestand.
+     * Een boardinglijst bevat alle nodige gegevens van alle passagier op het gekozen reis waarvan de boardling lijst afgeprint moet worden.
+     */
     private void ticketWegschrijvenInBestand(){
 
         System.out.println(GROEN + "\n" + zetStreepjes(15) +  "Ticket wegschrijven in bestand" + zetStreepjes(15) + "\n" +RESET);
@@ -430,12 +459,23 @@ public class EuromoonApp {
     // -----------------FUNCTIES VOOR KEUZE MENU ----------------- //
 
 
-
-
-    private void toonPersoon(ArrayList<Passagier> lijstPassagier) {
-           toonPassagier(lijstPassagier);
+    /**
+     * Functie om alle passagieren in de ArrayList lijstPassagier af te printen.
+     * Gebruikt de functie toonPassagier in de klasse Passagier.
+     */
+    private void toonPersoon() {
+           toonPassagier(EuromoonApp.lijstPassagier);
     }
 
+    /**
+     * Functie om alle reizen in de ArrayList lijstReis af te printen, met alle bestuurders, stewards en bagagepersoneel.
+     * Deze functie gebruikt verschillende functies uit de verschillende persoonsklasse om ze af te drukken.
+     * Deze functie is flexibel, het kan het type locomotief en lijst van wagons verbergen als het niet nodig is.
+     *
+     * @param lijstReis een ArrayList met alle reizen die we willen printen
+     * @param moetTreinBevatten een boolean om het type locomotief af te printen of niet
+     * @param moetWagonBevatten een boolean om de lijst van wagons dat mogelijks passagieren bevat af te printen of niet
+     */
     public static void toonReis(ArrayList<Reis> lijstReis, boolean moetTreinBevatten, boolean moetWagonBevatten){
         for (Reis r : lijstReis) {
 
@@ -481,7 +521,13 @@ public class EuromoonApp {
         }
     }
 
-
+    /**
+     * Deze functie maakt eerst een object Persoon aan.
+     * Naargelang het typePersoon dat werd meegegeven zal het een andere object return met de attributen dat worden gegeven.
+     *
+     * @param typePersoon een waarde uit de enumeratie typePersoon
+     * @return een verschillende constructor naargelang typePersoon
+     */
     private Persoon maakPersoon(TypePersoon typePersoon) {
 
 
@@ -505,6 +551,13 @@ public class EuromoonApp {
         return null;
     }
 
+    /**
+     * Functie om een object Bestuurder aan te maken.
+     * De functie zal eerst maakPersoon gebruiken om een Persoon aan te maken, die het dan upcast naar een Personeelslid. Uiteindelijk wordt het nieuw object Personeelslid nog eens gecast naar een object Bestuurder.
+     * De functie gebruikt ook de functie voegCertificatiesToeAanPersoneelslid om certificaties te voegen aan het nieuw gemaakte object.
+     *
+     * @return een object Bestuurder met een lijst van certificaties
+     */
     private Personeelslid maakBestuurder() {
 
         Personeelslid p = (Personeelslid) maakPersoon(TypePersoon.BESTUURDER);
@@ -515,6 +568,13 @@ public class EuromoonApp {
         return bestuurder;
     }
 
+    /**
+     * Functie om een object Steward aan te maken.
+     * De functie zal eerst maakPersoon gebruiken om een Persoon aan te maken, die het dan upcast naar een Personeelslid. Uiteindelijk wordt het nieuw object Personeelslid nog eens gecast naar een object Steward.
+     * De functie gebruikt ook de functie voegCertificatiesToeAanPersoneelslid om certificaties te voegen aan het nieuw gemaakte object.
+     *
+     * @return een object Steward met een lijst van certificaties
+     */
     private Personeelslid maakSteward() {
 
         Personeelslid p = (Personeelslid) maakPersoon(TypePersoon.STEWARD);
@@ -524,6 +584,13 @@ public class EuromoonApp {
         return steward;
     }
 
+    /**
+     * Functie om een object BagagePersoneel aan te maken.
+     * De functie zal eerst maakPersoon gebruiken om een Persoon aan te maken, die het dan upcast naar een Personeelslid. Uiteindelijk wordt het nieuw object Personeelslid nog eens gecast naar een object BagagePersoneel.
+     * De functie gebruikt ook de functie voegCertificatiesToeAanPersoneelslid om certificaties te voegen aan het nieuw gemaakte object.
+     *
+     * @return een object BagagePersoneel met een lijst van certificaties
+     */
     private Personeelslid maakBagagePersoneel() {
 
         Personeelslid p = (Personeelslid) maakPersoon(TypePersoon.BAGAGEPERSONEEL);
@@ -535,6 +602,12 @@ public class EuromoonApp {
         return bagagePersoneel;
     }
 
+
+    /**
+     * Deze functie gebruikt een do while om certificaties (in String) toe te voegen aan een instantie van Personeelslid.
+     *
+     * @param p een instantie van een object Personeelslid
+     */
     private void voegCertificatiesToeAanPersoneelslid(Personeelslid p) {
 
         String certificaties;
@@ -546,7 +619,6 @@ public class EuromoonApp {
 
             if (!certificaties.equalsIgnoreCase("STOP")) {
 
-                assert p != null;
                 p.voegCertificatie(certificaties);
             }
 
@@ -554,11 +626,22 @@ public class EuromoonApp {
     }
 
 
+    /**
+     * Kleine functie om een gekozen aantal streepjes te voegen om een cleane print te bouwen.
+     *
+     * @param aantalStreepjes een int voor het aantal streepjes
+     * @return een String met het gewenste aantal streepjes
+     */
     private String zetStreepjes(int aantalStreepjes) {
 
         return "-".repeat(aantalStreepjes);
     }
 
+
+    /**
+     * Kleine functie om te tonen dat een optie gedaan is.
+     * Het geeft een SOUT van 50 streepjes.
+     */
     private void eindOptie(){
         System.out.println(GROEN + "-".repeat(50) + RESET);
     }

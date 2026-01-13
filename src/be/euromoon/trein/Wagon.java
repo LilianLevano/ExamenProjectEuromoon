@@ -8,21 +8,25 @@ import java.util.ArrayList;
 import static be.euromoon.EuromoonApp.GEEL;
 import static be.euromoon.EuromoonApp.RESET;
 
+/**
+ * Deze klasse representeert een wagon. Elke wagon kan een aantal (max. 80) passagieren houden.
+ */
 public class Wagon implements Serializable {
 
-    private static int wagonTeller;
-    private ArrayList<Passagier> lijstPassagier = new ArrayList<>();
-    private int maxAantalPassagierPerWagon;
 
+    private final ArrayList<Passagier> lijstPassagier = new ArrayList<>();
+
+    /**
+     * Maakt een object Wagon aan. Neemt geen parameters mee in het constructor
+     */
     public Wagon() {
-        wagonTeller++;
-        this.maxAantalPassagierPerWagon = 80;
     }
 
-    public static int getWagonTeller() {
-        return wagonTeller;
-    }
 
+    /**
+     * Functie om een Passagier object toe te voegen in een wagon.
+     * @param p een object Passagier
+     */
     public void voegPassagierToeAanWagon(Passagier p){
         lijstPassagier.add(p);
     }
@@ -31,6 +35,9 @@ public class Wagon implements Serializable {
         return lijstPassagier;
     }
 
+    /**
+     * Functie om alle passagieren in een wagon af te printen.
+     */
     public void toonPassagierInWagon(){
 
         for ( Passagier p : lijstPassagier){

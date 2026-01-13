@@ -1,8 +1,10 @@
 import be.euromoon.EuromoonApp;
 
-void main() {
+public class Main {
 
-    EuromoonApp app = new EuromoonApp();
-    app.start();
+    public static void main(String[] args) {
+        EuromoonApp app = new EuromoonApp();
+        app.start();
+    }
 
 }

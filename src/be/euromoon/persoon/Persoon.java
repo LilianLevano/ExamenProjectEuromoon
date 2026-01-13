@@ -7,6 +7,10 @@ import java.util.ArrayList;
 import static be.euromoon.EuromoonApp.GEEL;
 import static be.euromoon.EuromoonApp.RESET;
 
+/**
+ * Deze klasse representeert een Persoon.
+ * Het stemt af van Personeelslid en Persoon, wordt enkel gebruikt in EuromoonApp en dient om een makkelijk onderscheiding te maken tussen alle types personeelsleden.
+ */
 public class Persoon implements Serializable {
 
     private final String voornaam;
@@ -14,6 +18,13 @@ public class Persoon implements Serializable {
     private final String rijksregisternummer;
     private final LocalDate geboortedatum;
 
+    /**
+     * Maakt een Persoon object aan
+     * @param voornaam een String met de voornaam
+     * @param achternaam een String met de achternaam
+     * @param rijksregisternummer een String met rijksregisternummer
+     * @param geboortedatum een LocalDate met de geboortedatum
+     */
     public Persoon(String voornaam, String achternaam, String rijksregisternummer, LocalDate geboortedatum) {
         this.voornaam = voornaam;
         this.achternaam = achternaam;

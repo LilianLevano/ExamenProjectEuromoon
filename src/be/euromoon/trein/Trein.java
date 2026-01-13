@@ -4,16 +4,24 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.TreeSet;
 
+/**
+ * Deze klasse representeert een trein.
+ * Een trein bevat een waarde uit het enumeratie TypeLocomotief, die zijn aantal zitplaatsen vast stelt.
+ */
 public class Trein {
 
     private TypeLocomotief typeLocomotief;
     private int aantalZitplaatsen;
-    private static int treinTeller = 0;
     private final ArrayList<Wagon> lijstWagons;
 
+    /**
+     * Maakt een object Trein aan.
+     * Elk nieuw object Trein wordt aangevuld met een aantal wagons, afhankelijk van de type locomotief.
+     * Aantal zitplaatsen worden ook daarvan berekend.
+     * @param typeLocomotief een waarde uit de enumeratie TypeLocomotief
+     */
     public Trein(TypeLocomotief typeLocomotief) {
         this.typeLocomotief = typeLocomotief;
-
 
         aantalZitplaatsen = typeLocomotief.getMaxAantalWagon() * 80;
         this.lijstWagons = new ArrayList<>(typeLocomotief.getMaxAantalWagon());
@@ -21,10 +29,6 @@ public class Trein {
         for(int i = 0; i < typeLocomotief.getMaxAantalWagon(); i++) {
             lijstWagons.add(new Wagon());
         }
-        treinTeller++;
-
-
-
     }
 
     public ArrayList<Wagon> getLijstWagons() {
@@ -33,12 +37,6 @@ public class Trein {
 
     public TypeLocomotief getTypeLocomotief() {
         return typeLocomotief;
-    }
-
-    public void setTypeLocomotief(TypeLocomotief typeLocomotief) {
-        this.typeLocomotief = typeLocomotief;
-        aantalZitplaatsen = typeLocomotief.getMaxAantalWagon() * 80;
-
     }
 
     public int getAantalZitplaatsen() {
