@@ -1,10 +1,9 @@
+Vertrekt punt: a, vertrekdatum: 2006-06-06_12-12-12
+Aankomstpunt: b, aankomstdatum: 2006-06-06_12-12-12
 
 Passagier0:
-Voornaam passagier: A
-Achternaam passagier: A
-Rijksregisternummer van de passagier: A
+Voornaam passagier: Lilian
+Achternaam passagier: Levano
+Rijksregisternummer van de passagier: 2344HJ
 Geboortedatum van de passagier: 2006-06-06
 Klasse van de passagier: eerste_klasse
-
-Vertrekt punt: A, vertrekdatum: 2006-06-06_12-12-12
-Aankomstpunt: B, aankomstdatum: 2006-06-06_12-12-12
