@@ -1,0 +1,10 @@
+
+Passagier0:
+Voornaam passagier: A
+Achternaam passagier: A
+Rijksregisternummer van de passagier: A
+Geboortedatum van de passagier: 2006-06-06
+Klasse van de passagier: eerste_klasse
+
+Vertrekt punt: A, vertrekdatum: 2006-06-06_12-12-12
+Aankomstpunt: B, aankomstdatum: 2006-06-06_12-12-12
