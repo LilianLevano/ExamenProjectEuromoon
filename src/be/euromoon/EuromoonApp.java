@@ -51,7 +51,7 @@ public class EuromoonApp {
     public void start() {
         System.out.println(GEEL + zetStreepjes(15) + "Welkom op de Euromoon Manager App" + zetStreepjes(15)+ RESET );
 
-        System.out.println("Om deze app efficient te gebruiken, wordt het aangeraden om het console venster groot te maken. \nKritische informatie over het gebruiken van de verschillende opties worden altijd bovenaan getoond.\n");
+        System.out.println("Om deze app efficient te gebruiken, wordt het aangeraden om het console venster groot te maken.\nEr kunnen veel informatie op het scherm komen, waardoor het soms nodig is om naar boven te scrollen. \nKritische informatie over het gebruiken van de verschillende opties worden altijd bovenaan getoond.\n");
 
 
         int keuzeMenu;
@@ -72,6 +72,7 @@ public class EuromoonApp {
                     
                     9. Stop de applicatie.""");
             System.out.print("--> ");
+
             keuzeMenu = Integer.parseInt(sc.nextLine());
 
             switch (keuzeMenu) {
@@ -325,7 +326,7 @@ public class EuromoonApp {
      */
     private void verkoopTicketAanPassagier() {
 
-    if (!lijstReis.isEmpty()) {
+    if (!lijstReisMetTrein.isEmpty()) {
         if(!lijstPassagier.isEmpty()) {
 
 
@@ -450,7 +451,7 @@ public class EuromoonApp {
             System.err.println("Er zijn momenteel geen beschikbare personen. Maak er eerst een aan.");
         }
     }else{
-        System.err.println("Er zijn momenteel geen reizen beschikbaar. Maak er eerst een aan.");
+        System.err.println("Er zijn momenteel geen geldige reizen beschikbaar. Maak er eerst een aan.");
     }
     }
 
@@ -487,6 +488,7 @@ public class EuromoonApp {
 
                 try (FileWriter writer = new FileWriter("ticket/" + bestandsNaam)) {
 
+                    writer.write("Reis:\n" );
                     writer.write("Vertrekt punt: " + gekozeReis.getTraject().getStartPunt() + ", vertrekdatum: " + gekozeReis.getTijdstip().getProperAankomstPuntA() + "\nAankomstpunt: " + gekozeReis.getTraject().getEindPunt() + ", aankomstdatum: " + gekozeReis.getTijdstip().getProperAankomstPuntB() + "\n") ;
 
                     int i = 0;
@@ -512,7 +514,7 @@ public class EuromoonApp {
             eindOptie();
 
         }else{
-            System.err.println("Er zijn momenteel geen reizen beschikbaar. Maak er eerst een aan.");
+            System.err.println("Er zijn momenteel geen geldige reizen beschikbaar. Maak er eerst een aan.");
         }
 
     }
