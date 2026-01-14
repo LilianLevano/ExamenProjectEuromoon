@@ -15,7 +15,6 @@ import static be.euromoon.EuromoonApp.RESET;
  * Deze klasse representeert een Bagage Personeel.
  * Het stamt af van Personeelslid en Persoon, wordt enkel gebruikt in EuromoonApp en dient om een makkelijk onderscheiding te maken tussen alle types personeelsleden.
  */
-
 public class BagagePersoneel extends Personeelslid implements Serializable {
 
 
@@ -36,7 +35,6 @@ public class BagagePersoneel extends Personeelslid implements Serializable {
      * Gebruikt de getters van de klasse Persoon om zijn gegevens af te printen
      *
      * @param bagagePersoneel Een ArrayList die enkel Personeelslid objecten accepteert is vereist om deze functie te gebruiken.
-     *
      */
     public static void toonBagagePersoneel(ArrayList<Personeelslid> bagagePersoneel) {
 

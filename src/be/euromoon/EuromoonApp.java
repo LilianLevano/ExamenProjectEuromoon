@@ -15,22 +15,15 @@ import be.euromoon.tickets.Ticket;
 import be.euromoon.trein.Trein;
 import be.euromoon.trein.TypeLocomotief;
 import be.euromoon.trein.Wagon;
-
-
-
 import java.io.FileWriter;
 import java.io.IOException;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
-
 import java.util.List;
 import java.util.Scanner;
-
 import static be.euromoon.persoon.Passagier.toonPassagier;
-
 import static be.euromoon.persoon.typePersoneel.BagagePersoneel.toonBagagePersoneel;
 import static be.euromoon.persoon.typePersoneel.Bestuurder.toonBestuurder;
 import static be.euromoon.persoon.typePersoneel.Steward.toonSteward;
@@ -46,7 +39,7 @@ public class EuromoonApp {
     private final ArrayList<Reis> lijstReis = new ArrayList<>();
     private final ArrayList<Ticket> lijstTicket = new ArrayList<>();
     private final ArrayList<Reis> lijstReisMetTrein = new ArrayList<>();
-    private final ArrayList<Passagier> lijstPassagierMetTicket = new ArrayList<>();
+
 
 
     /**
@@ -128,7 +121,7 @@ public class EuromoonApp {
         } catch (DateTimeParseException e) {
             System.err.println("Foutieve invoer: Je hebt een foute formaat ingegeven bij het geboortedatum. Passagier werd niet aangemaakt, probeer opnieuw.");
         } catch (Exception e) {
-            System.err.println(e.getMessage());;
+            System.err.println(e.getMessage());
         }
 
         eindOptie();
@@ -354,7 +347,7 @@ public class EuromoonApp {
 
                     Passagier ticketAanPassagierVerkopen = lijstPassagier.get(keuzePassagier);
 
-                    System.out.println("In welke klasse wilt " + ticketAanPassagierVerkopen.getVoornaam() + " " + ticketAanPassagierVerkopen.getAchternaam() + " zitten ? Er is keuze tussen:\n");
+                    System.out.println(GEEL + "\nIn welke klasse wilt " + ticketAanPassagierVerkopen.getVoornaam() + " " + ticketAanPassagierVerkopen.getAchternaam() + " zitten ?" + RESET +  "\nEr is keuze tussen:\n");
 
                     ArrayList<Klasse> lijstKlasse = new ArrayList<>(List.of(Klasse.values()));
 
@@ -362,7 +355,7 @@ public class EuromoonApp {
                         System.out.println(lijstKlasse.indexOf(klasse) + "." + klasse.name() + "\n");
                     }
 
-                    System.out.print("Gebruik de nummers om een klasse te selecteren)\n-->");
+                    System.out.print("Gebruik de nummers om een klasse te selecteren\n-->");
 
                     Klasse klasse;
                     do {
@@ -418,7 +411,7 @@ public class EuromoonApp {
                             if (grootteLijstTicketVoorAanpassing != lijstTicket.size()) {
                                 System.out.println(GROEN + "Ticket werd succesvol verkoopt aan " + ticketAanPassagierVerkopen.getVoornaam() + " " + ticketAanPassagierVerkopen.getAchternaam() + RESET);
                                 reisKoppelenAanTicket.ticketGemaakt();
-                                lijstPassagierMetTicket.add(ticketAanPassagierVerkopen);
+
                                 reisKoppelenAanTicket.voegPersoonMetTicketToe(ticketAanPassagierVerkopen);
                                 fouteKeuzeWagon = false;
                             } else {
@@ -446,7 +439,7 @@ public class EuromoonApp {
 
     /**
      * Optie om een boardinglijst van een reis af te drukken in een extern bestand.
-     * Een boardinglijst bevat alle nodige gegevens van alle passagier op het gekozen reis waarvan de boardling lijst afgeprint moet worden.
+     * Een boardinglijst bevat alle nodige gegevens van alle passagier op het gekozen reis waarvan de boarding lijst afgeprint moet worden.
      */
     private void ticketWegschrijvenInBestand(){
 
@@ -476,10 +469,11 @@ public class EuromoonApp {
 
                     int i = 0;
                     for (Passagier p : lijstPassagierMetTicketOpDezeReis) {
-
                         writer.append(p.toonPassagierVoorTicket(i));
                         i++;
                     }
+
+                    writer.write("\nVertrekt punt: " + gekozeReis.getTraject().getStartPunt() + ", vertrekdatum: " + gekozeReis.getTijdstip().getProperAankomstPuntA() + "\nAankomstpunt: " + gekozeReis.getTraject().getEindPunt() + ", aankomstdatum: " + gekozeReis.getTijdstip().getProperAankomstPuntB()) ;
 
 
                 } catch (IOException e) {

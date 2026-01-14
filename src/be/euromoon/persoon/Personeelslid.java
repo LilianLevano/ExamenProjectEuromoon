@@ -21,16 +21,11 @@ public class Personeelslid extends Persoon implements Serializable {
      */
     public Personeelslid(String voornaam, String achternaam, String rijksregisternummer, LocalDate geboortedatum) {
         super(voornaam, achternaam, rijksregisternummer, geboortedatum);
-
-
     }
-
-
 
     public ArrayList<String> getLijstCertificaties() {
         return lijstCertificaties;
     }
-
 
     /**
      * Functie om een certificatie (String) toe te voegen aan een lijst van certificaties.
@@ -38,17 +33,9 @@ public class Personeelslid extends Persoon implements Serializable {
      *
      * @param certificatie een String met een certificatie
      */
-
     public void voegCertificatie(String certificatie){
         lijstCertificaties.add(certificatie);
     }
-
-//    public void verwijderCertificatie(String certificatie){
-//        lijstCertificaties.remove(certificatie);
-//    }
-
-
-
 
 
     @Override

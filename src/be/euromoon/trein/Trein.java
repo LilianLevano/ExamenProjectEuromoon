@@ -1,8 +1,7 @@
 package be.euromoon.trein;
 
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.TreeSet;
+
 
 /**
  * Deze klasse representeert een trein.
@@ -10,8 +9,8 @@ import java.util.TreeSet;
  */
 public class Trein {
 
-    private TypeLocomotief typeLocomotief;
-    private int aantalZitplaatsen;
+    private final TypeLocomotief typeLocomotief;
+    private final int aantalZitplaatsen;
     private final ArrayList<Wagon> lijstWagons;
 
     /**

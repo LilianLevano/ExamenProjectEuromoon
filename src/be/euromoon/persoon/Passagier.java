@@ -36,7 +36,7 @@ public class Passagier extends Persoon implements Serializable {
     }
 
     /**
-     *
+
      * @return Waarde van de enum Klasse in lowercase
      */
     public String getKlasse() {

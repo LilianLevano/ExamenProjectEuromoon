@@ -31,6 +31,11 @@ public class Tijdstip implements Serializable {
         return this.aankomstPuntA.format(fmt);
     }
 
+    public String getProperAankomstPuntB() {
+        DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss");
+        return this.aankomstPuntB.format(fmt);
+    }
+
 
 
     @Override

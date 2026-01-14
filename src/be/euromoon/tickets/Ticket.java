@@ -4,10 +4,7 @@ import be.euromoon.persoon.Passagier;
 import be.euromoon.reizen.Reis;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 
-import static be.euromoon.EuromoonApp.lijstPassagier;
-import static be.euromoon.EuromoonApp.toonReis;
 
 
 /**
@@ -16,7 +13,7 @@ import static be.euromoon.EuromoonApp.toonReis;
 public class Ticket implements Serializable {
 
     private Passagier passagier;
-    private Reis reis;
+    private final Reis reis;
     private Klasse klasse;
 
 

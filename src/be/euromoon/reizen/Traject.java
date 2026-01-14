@@ -7,7 +7,7 @@ import java.io.Serializable;
  */
 public class Traject implements Serializable {
 
-    private String startPunt, eindPunt;
+    private final String startPunt, eindPunt;
 
     /**
      * Maak een object Traject aan.

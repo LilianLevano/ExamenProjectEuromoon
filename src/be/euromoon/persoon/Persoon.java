@@ -2,10 +2,7 @@ package be.euromoon.persoon;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.ArrayList;
 
-import static be.euromoon.EuromoonApp.GEEL;
-import static be.euromoon.EuromoonApp.RESET;
 
 /**
  * Deze klasse representeert een Persoon.

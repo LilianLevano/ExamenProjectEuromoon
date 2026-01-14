@@ -13,14 +13,14 @@ Deze applicatie laat toe om verschillende trein-gerelateerde objecten aan te mak
 - IDE om de applicatie te laten werken
 
 ## Project starten
-1. Open het project in een Java IDE  
+1. Open het project in een IDE die Java accepteert  
 2. Ga naar `src/Main.java`  
 3. Run de `main`-methode
 
 ## Externe bronnen
 
-- Oude, eigen projecten
-- Cursus 
+- Oude, eigen projecten 
+- AI-tools zoals ChatGPT en Copilot werden gebruikt voor kleine fixes in de code
 
 ## Auteur
 
