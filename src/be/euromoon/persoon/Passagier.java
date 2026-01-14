@@ -63,23 +63,7 @@ public class Passagier extends Persoon implements Serializable {
         }
     }
 
-    /**
-     * Deze functie print print voor 1 passagier zijn gegevens af.
-     * Het werd anders geformatteerd om het proper te krijgen bij het wegschrijven naar een extern bestand.
-     * Werkt in combinatie van een for each buiten deze functie in EuromoonApp.
-     * @param i om voor elk passagier een nummer te krijgen om orde te maken in de boarding lijst.
-     * @return een String met alle nodige gegevens van een passagier op een reis
-     */
-    public String toonPassagierVoorTicket(int i){
 
-        return "\nPassagier" + i + ":" +
-                "\nVoornaam passagier: " + getVoornaam() +
-                "\nAchternaam passagier: " + getAchternaam() +
-                "\nRijksregisternummer van de passagier: " + getRijksregisternummer() +
-                "\nGeboortedatum van de passagier: " + getGeboortedatum() +
-                "\nKlasse van de passagier: " + getKlasse() +
-                "\n";
-    }
 
 
 

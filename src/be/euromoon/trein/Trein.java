@@ -6,6 +6,7 @@ import java.util.ArrayList;
 /**
  * Deze klasse representeert een trein.
  * Een trein bevat een waarde uit het enumeratie TypeLocomotief, die zijn aantal zitplaatsen vast stelt.
+ * Het bevat ook een lijst die gevuld wordt door nieuwe Wagon objecten. Deze objecten kunnen dan gevuld worden met maximaal 80 passagiers.
  */
 public class Trein {
 

@@ -28,7 +28,9 @@ import static be.euromoon.persoon.typePersoneel.BagagePersoneel.toonBagagePerson
 import static be.euromoon.persoon.typePersoneel.Bestuurder.toonBestuurder;
 import static be.euromoon.persoon.typePersoneel.Steward.toonSteward;
 
-
+/**
+ * EuromoonApp is de klasse die de hele applicatie bevat. Daarvan worden alle acties uitgevoerd die nodig zijn voor Euromoon.
+ */
 public class EuromoonApp {
 
     public static final String GROEN = "\u001B[32m";
@@ -39,6 +41,7 @@ public class EuromoonApp {
     private final ArrayList<Reis> lijstReis = new ArrayList<>();
     private final ArrayList<Ticket> lijstTicket = new ArrayList<>();
     private final ArrayList<Reis> lijstReisMetTrein = new ArrayList<>();
+    private final ArrayList<Reis> lijstGeldigeReizenVoorWegschrijven = new ArrayList<>();
 
 
 
@@ -131,6 +134,7 @@ public class EuromoonApp {
      * Optie om een reis te maken.
      * Een object Traject en Tijdstip worden aangemaakt om een reis te maken.
      * Dan worden bestuurders, stewards en bagage personelen toegevoegd aan de hand van functies die een object Personeelslid maken, die dan wordt gecast naar de nodige type personeel.
+     * Uiteindelijk wordt het gemaakte reis toegevoegd aan de ArrayList lijstReis
      */
     private void maakReis() {
 
@@ -234,6 +238,7 @@ public class EuromoonApp {
     /**
      * Optie om een trein aan een reis te koppelen.
      * Eerst wordt een type locomotief gekozen om een object Trein aan te maken, trein die dan aan een reis kan toegevoegd worden.
+     * Deze type locomotief bepaalt hoeveel plaatsen er per reis aanwezig zijn, en dus hoeveel tickets er per reis mogelijk zijn.
      */
     private void treinAanReisKoppelen() {
 
@@ -244,9 +249,16 @@ public class EuromoonApp {
             System.out.println(GROEN + "\n" + zetStreepjes(15) + "Koppel een trein aan een reis" + zetStreepjes(15) + RESET);
 
             try {
-                System.out.print("\nWelke type trein wil je aan een reis koppelen? Je hebt de keuze tussen: \n1. CLASS_373 (Kan tot 12 wagons trekken) \n2. CLASS_374 (Kan tot 14 wagons trekken). \n(Gebruik de index van de keuze om deze te selecteren)\n--> ");
+                System.out.println("\nWelke type trein wil je aan een reis koppelen? Je hebt de keuze tussen: ");
 
                 ArrayList<TypeLocomotief> lijstLocomotieven = new ArrayList<>(List.of(TypeLocomotief.values()));
+
+                for (TypeLocomotief t : lijstLocomotieven) {
+                    System.out.println(lijstLocomotieven.indexOf(t) +". " + t.name() + ", kan maximaal: " + t.getMaxAantalWagon() + " wagons trekken.");
+                }
+
+                System.out.print("Gebruik de index van de gewenste type locomotief om deze te selecteren.\n--> ");
+
                 TypeLocomotief typeLocomotief;
                 do {
 
@@ -276,7 +288,7 @@ public class EuromoonApp {
                 System.out.println("\nHier zijn alle mogelijke reizen waaraan je deze trein kan koppelen: ");
 
 
-                toonReis(lijstReis, false, true);
+                toonReis(lijstReis, true, false);
 
 
                 System.out.print("Aan welke reis wil je deze trein koppelen? \n(Gebruik de index van de reis.)\n--> ");
@@ -308,7 +320,9 @@ public class EuromoonApp {
     /**
      * Optie om een ticket te verkopen aan een passagier.
      * Eerst wordt er een reis gekozen, dan wordt er een al geregistreerde passagier gekozen, uiteindelijk wordt een waarde uit de enumeratie Klasse gekozen om een object Ticket aan te maken.
+     * Dit ticket wordt dan toegevoegd aan de lijst van tickets die een reis bevat.
      * Een klasse uit de enumeratie Klasse wordt ook gekozen om ze aan een passagier te koppelen.
+     *
      */
     private void verkoopTicketAanPassagier() {
 
@@ -415,8 +429,9 @@ public class EuromoonApp {
                             if (grootteLijstTicketVoorAanpassing != lijstTicket.size()) {
                                 System.out.println(GROEN + "Ticket werd succesvol verkoopt aan " + ticketAanPassagierVerkopen.getVoornaam() + " " + ticketAanPassagierVerkopen.getAchternaam() + RESET);
                                 reisKoppelenAanTicket.ticketGemaakt();
-
+                                reisKoppelenAanTicket.voegTicketToe(ticket);
                                 reisKoppelenAanTicket.voegPersoonMetTicketToe(ticketAanPassagierVerkopen);
+                                lijstGeldigeReizenVoorWegschrijven.add(reisKoppelenAanTicket);
                                 fouteKeuzeWagon = false;
                             } else {
                                 System.err.println("Ticket werd niet verkoopt.");
@@ -443,18 +458,19 @@ public class EuromoonApp {
 
     /**
      * Optie om een boardinglijst van een reis af te drukken in een extern bestand.
+     * Het gebruikt de ArrayList lijstTicket om alle informatie van alle tickets af te printen
      * Een boardinglijst bevat alle nodige gegevens van alle passagier op het gekozen reis waarvan de boarding lijst afgeprint moet worden.
      */
     private void ticketWegschrijvenInBestand(){
 
 
-        if (!lijstReis.isEmpty()) {
+        if (!lijstGeldigeReizenVoorWegschrijven.isEmpty()) {
 
 
             System.out.println(GROEN + "\n" + zetStreepjes(15) + "Ticket wegschrijven in bestand" + zetStreepjes(15) + "\n" + RESET);
 
             System.out.println(GEEL + zetStreepjes(4) + "Hier zijn de mogelijke reizen waarvan je een ticket kan printen: " + zetStreepjes(4) + "\n" + RESET);
-            toonReis(lijstReis, true, true);
+            toonReis(lijstGeldigeReizenVoorWegschrijven, true, true);
             System.out.print("Kies een reis. \nGebruik de nummer van de reis die je wilt selecteren: ");
 
             try {
@@ -466,17 +482,21 @@ public class EuromoonApp {
 
                 Reis gekozeReis = lijstReis.get(keuzeReis);
                 String bestandsNaam = gekozeReis.getTraject().getStartPunt() + "_" + gekozeReis.getTraject().getEindPunt() + "_" + gekozeReis.getTijdstip().getProperAankomstPuntA() + ".txt";
-                ArrayList<Passagier> lijstPassagierMetTicketOpDezeReis = gekozeReis.getLijstPassagierMetTicket();
+
+                ArrayList<Ticket> lijstTicket = gekozeReis.getLijstTicket();
 
 
                 try (FileWriter writer = new FileWriter("ticket/" + bestandsNaam)) {
 
                     writer.write("Vertrekt punt: " + gekozeReis.getTraject().getStartPunt() + ", vertrekdatum: " + gekozeReis.getTijdstip().getProperAankomstPuntA() + "\nAankomstpunt: " + gekozeReis.getTraject().getEindPunt() + ", aankomstdatum: " + gekozeReis.getTijdstip().getProperAankomstPuntB() + "\n") ;
+
                     int i = 0;
-                    for (Passagier p : lijstPassagierMetTicketOpDezeReis) {
-                        writer.append(p.toonPassagierVoorTicket(i));
-                        i++;
+                    for (Ticket t :  lijstTicket) {
+                        Passagier p = t.getPassagier();
+                        String klasse = p.getKlasse();
+                        writer.append(t.toonPassagierVoorTicket(i, p)).append("Klasse: ").append(klasse).append("\n");
                     }
+
 
 
 

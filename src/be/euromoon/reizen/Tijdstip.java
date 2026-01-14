@@ -31,6 +31,10 @@ public class Tijdstip implements Serializable {
         return this.aankomstPuntA.format(fmt);
     }
 
+    /**
+     * Deze getter wordt gebruikt om een formaat te krijgen die een file kan aannemen als een bestandsnaam.
+     * @return een String met een geformatteerde LocalDateTime in formaat: "yyyy-MM-dd_HH-mm-ss"
+     */
     public String getProperAankomstPuntB() {
         DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss");
         return this.aankomstPuntB.format(fmt);

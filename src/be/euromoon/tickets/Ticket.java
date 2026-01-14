@@ -8,13 +8,14 @@ import java.io.Serializable;
 
 
 /**
- * Deze klasse representeert een ticket. Een ticket bevat een reis, een klasse en een passagier. Wordt gebruikt om een boarding lijst af te drukken.
+ * Deze klasse representeert een ticket voor een reis. Een ticket bevat een reis, een klasse en een passagier.
  */
 public class Ticket implements Serializable {
 
     private Passagier passagier;
     private final Reis reis;
     private Klasse klasse;
+
 
 
     /**
@@ -41,6 +42,24 @@ public class Ticket implements Serializable {
     }
     public void setKlasse(Klasse klasse) {
         this.klasse = klasse;
+    }
+
+    /**
+     * Deze functie print print voor 1 passagier zijn gegevens af.
+     * Het werd anders geformatteerd om het proper te krijgen bij het wegschrijven naar een extern bestand.
+     * Werkt in combinatie van een for each buiten deze functie in EuromoonApp.
+     * @param i om voor elk passagier een nummer te krijgen om orde te maken in de boarding lijst.
+     * @return een String met alle nodige gegevens van een passagier op een reis
+     */
+    public String toonPassagierVoorTicket(int i, Passagier passagier) {
+
+        return "\nPassagier" + i + ":" +
+                "\nVoornaam passagier: " + passagier.getVoornaam() +
+                "\nAchternaam passagier: " +passagier.getAchternaam() +
+                "\nRijksregisternummer van de passagier: " + passagier.getRijksregisternummer() +
+                "\nGeboortedatum van de passagier: " + passagier.getGeboortedatum() +
+                "\nKlasse van de passagier: " + getKlasse() +
+                "\n";
     }
 
 
