@@ -288,7 +288,7 @@ public class EuromoonApp {
                 System.out.println("\nHier zijn alle mogelijke reizen waaraan je deze trein kan koppelen: ");
 
 
-                toonReis(lijstReis, true, false);
+                toonReis(lijstReis, false, false);
 
 
                 System.out.print("Aan welke reis wil je deze trein koppelen? \n(Gebruik de index van de reis.)\n--> ");
@@ -300,7 +300,6 @@ public class EuromoonApp {
                 }
 
                 Reis reisKoppelenAanTrein = lijstReis.get(keuzeReis);
-
 
                 reisKoppelenAanTrein.koppelTreinAanReis(trein);
                 lijstReisMetTrein.add(reisKoppelenAanTrein);
@@ -493,8 +492,8 @@ public class EuromoonApp {
                     int i = 0;
                     for (Ticket t :  lijstTicket) {
                         Passagier p = t.getPassagier();
-                        String klasse = p.getKlasse();
-                        writer.append(t.toonPassagierVoorTicket(i, p)).append("Klasse: ").append(klasse).append("\n");
+
+                        writer.append(t.toonPassagierVoorTicket(i, p)).append("\n");
                     }
 
 
