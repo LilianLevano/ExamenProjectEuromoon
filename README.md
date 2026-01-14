@@ -16,6 +16,7 @@ Deze applicatie laat toe om verschillende trein-gerelateerde objecten aan te mak
 1. Open het project in een IDE die Java accepteert  
 2. Ga naar `src/Main.java`  
 3. Run de `main`-methode
+4. Checken dat een bestand "ticket" bestaat buiten de src bestand om het wegschrijven van een boardinglijst mogelijk te maken
 
 ## Externe bronnen
 

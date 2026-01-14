@@ -144,6 +144,10 @@ public class EuromoonApp {
             String eindpunt = sc.nextLine();
             Traject t = new Traject(startpunt, eindpunt);
 
+            if (startpunt.isEmpty() || eindpunt.isEmpty()) {
+                throw new Exception("Je moet 1 start- en eindpunt hebben om een reis te maken.");
+            }
+
             Tijdstip ti;
             try{
                 /*Maak een Tijdstip, onderdeel om een object Reis te bouwen  */
@@ -153,7 +157,7 @@ public class EuromoonApp {
                 LocalDateTime eind = LocalDateTime.parse(sc.nextLine());
                 ti = new Tijdstip(start, eind);
             }catch(DateTimeParseException e){
-                throw new Exception("Je hebt bij een van de tijdstip geen goeie formaat ingegeven. Probeer opnieuw.");
+                throw new Exception("Je hebt bij een van de tijdstip geen goeie formaat ingegeven.");
             }
 
 
@@ -220,7 +224,7 @@ public class EuromoonApp {
             }
 
         } catch (Exception e) {
-            System.err.println(e.getMessage());
+            System.err.println(e.getMessage() + " Actie werd gesloten. Probeer opnieuw.");
         }
 
         eindOptie();
@@ -229,7 +233,7 @@ public class EuromoonApp {
 
     /**
      * Optie om een trein aan een reis te koppelen.
-     * Eerst wordt een type locomotief gekozen om een trein aan te maken, trein die dan aan een reis kan toegevoegd worden.
+     * Eerst wordt een type locomotief gekozen om een object Trein aan te maken, trein die dan aan een reis kan toegevoegd worden.
      */
     private void treinAanReisKoppelen() {
 
@@ -467,13 +471,14 @@ public class EuromoonApp {
 
                 try (FileWriter writer = new FileWriter("ticket/" + bestandsNaam)) {
 
+                    writer.write("Vertrekt punt: " + gekozeReis.getTraject().getStartPunt() + ", vertrekdatum: " + gekozeReis.getTijdstip().getProperAankomstPuntA() + "\nAankomstpunt: " + gekozeReis.getTraject().getEindPunt() + ", aankomstdatum: " + gekozeReis.getTijdstip().getProperAankomstPuntB() + "\n") ;
                     int i = 0;
                     for (Passagier p : lijstPassagierMetTicketOpDezeReis) {
                         writer.append(p.toonPassagierVoorTicket(i));
                         i++;
                     }
 
-                    writer.write("\nVertrekt punt: " + gekozeReis.getTraject().getStartPunt() + ", vertrekdatum: " + gekozeReis.getTijdstip().getProperAankomstPuntA() + "\nAankomstpunt: " + gekozeReis.getTraject().getEindPunt() + ", aankomstdatum: " + gekozeReis.getTijdstip().getProperAankomstPuntB()) ;
+
 
 
                 } catch (IOException e) {
@@ -577,6 +582,10 @@ public class EuromoonApp {
         System.out.print("Rijksregisternummer van de " + typePersoon.name().toLowerCase() + ": ");
         String rijksregisternummer = sc.nextLine();
 
+        if (voornaam.isEmpty() || achternaam.isEmpty() || rijksregisternummer.isEmpty()) {
+            throw new Exception("Een persoon moet 1 voornaam, achternaam en rijksregisternummer bevatten.");
+        }
+
         LocalDate geboortedatum;
 
         try {
@@ -585,7 +594,7 @@ public class EuromoonApp {
             System.out.print("Geboortedatum van de " + typePersoon.name().toLowerCase() + " (Formaat: yyyy-MM-dd): ");
             geboortedatum = LocalDate.parse(sc.nextLine());
         }catch (DateTimeParseException e){
-            throw new Exception("Je hebt een foute formaat ingegeven bij het geboortedatum.");
+            throw new Exception("Je hebt een foute formaat ingegeven bij het geboortedatum. Persoon werd niet aangemaakt.");
         }
         switch (typePersoon) {
             case PASSAGIER -> {return new Passagier(voornaam, achternaam, rijksregisternummer, geboortedatum);}
@@ -655,7 +664,7 @@ public class EuromoonApp {
      *
      * @param p een instantie van een object Personeelslid
      */
-    private void voegCertificatiesToeAanPersoneelslid(Personeelslid p) {
+    private void voegCertificatiesToeAanPersoneelslid(Personeelslid p) throws Exception {
 
         String certificaties;
 
@@ -665,11 +674,11 @@ public class EuromoonApp {
             certificaties = sc.nextLine();
 
             if (!certificaties.equalsIgnoreCase("STOP")) {
-
                     p.voegCertificatie(certificaties);
+            }
 
-
-
+            if (p.getLijstCertificaties().isEmpty()) {
+                throw new Exception("Een personeelslid moet minstens 1 certificatie hebben.");
             }
 
         } while (!certificaties.equalsIgnoreCase("STOP") && !p.getLijstCertificaties().isEmpty());
